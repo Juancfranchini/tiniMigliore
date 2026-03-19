@@ -1,0 +1,131 @@
+.headerWrapper {
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.headerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logoImage {
+  width: 270px;
+  height: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+.navSection {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Desktop Links */
+.desktopLinks {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  font-family: var(--font-sans);
+}
+
+.navLink {
+  color: var(--color-text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: var(--color-brand-morado);
+}
+
+/* Mobile Menu Toggle Button */
+.menuToggleBtn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+/* Mobile Navigation Overlay */
+.mobileNavLayer {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.mobileNavLayer.open {
+  display: flex;
+}
+
+.cartButton {
+  position: relative;
+  padding: 0.5rem;
+  color: var(--color-text-primary);
+}
+
+.cartBadge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--color-brand-morado);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainContent {
+  flex-grow: 1;
+  background-color: var(--color-brand-crema);
+}
+
+.footerWrapper {
+  background-color: var(--color-surface);
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--color-text-secondary);
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 768px) {
+  .logoImage {
+    width: 200px; /* Reduce logo size on mobile */
+  }
+  
+  .desktopLinks {
+    display: none; /* Hide standard links on mobile */
+  }
+
+  .menuToggleBtn {
+    display: flex; /* Show hamburger button */
+  }
+  
+  .navSection {
+    gap: 0.5rem; /* Less gap next to cart on mobile */
+  }
+}

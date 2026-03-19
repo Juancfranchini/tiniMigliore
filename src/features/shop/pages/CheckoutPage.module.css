@@ -1,0 +1,89 @@
+.pageContainer {
+  max-width: 1000px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+}
+
+.pageTitle {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--color-brand-morado);
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sectionTitle {
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+  color: var(--color-text-primary);
+}
+
+.grid2Cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.gridAddress {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.grid1Col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.deliveryCard {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.summaryCard {
+  position: sticky;
+  top: 5rem;
+}
+
+@media (max-width: 768px) {
+  .pageContainer {
+    margin: 1.5rem auto;
+  }
+  .pageTitle {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .mainGrid {
+    grid-template-columns: 1fr;
+  }
+  .grid2Cols {
+    grid-template-columns: 1fr;
+  }
+  .gridAddress {
+    grid-template-columns: 2fr 1fr; /* Todavía mantener calle y número en una fila, pero más balanceado. O si no, 1fr total: */
+  }
+  /* Si prefieres apilar todo en mobile: */
+  /* .gridAddress { grid-template-columns: 1fr; } */
+  
+  .summaryCard {
+    position: static;
+  }
+}

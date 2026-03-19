@@ -1,0 +1,181 @@
+.layoutWrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f3f4f6;
+  position: relative;
+}
+
+/* Mobile Topbar (visible only on mobile) */
+.mobileTopbar {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.mobileLogo {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+
+.menuButton {
+  background: none;
+  border: none;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+/* Sidebar Overlay for Mobile */
+.sidebarOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 45;
+}
+
+.sidebarOverlay.open {
+  display: block;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 260px;
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  z-index: 50;
+  transition: transform 0.3s ease;
+}
+
+.sidebarHeader {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebarLogo {
+  width: 100%;
+  height: auto;
+  max-width: 180px;
+  margin: 0 auto;
+  object-fit: contain;
+  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.1));
+}
+
+.closeSidebarBtn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.navSection {
+  flex-grow: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.navLink {
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.navLink.active {
+  background-color: var(--color-brand-morado);
+  color: var(--color-surface);
+}
+
+.logoutSection {
+  padding: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.logoutBtn {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  color: var(--color-error);
+  padding: 0.75rem 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s;
+}
+
+.logoutBtn:hover {
+  background-color: rgba(220, 38, 38, 0.05);
+}
+
+/* Main Content */
+.mainWrapper {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* Important for flex children scrolling */
+}
+
+.mainContent {
+  padding: 2rem;
+  flex-grow: 1;
+}
+
+.contentContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .layoutWrapper {
+    flex-direction: column;
+  }
+
+  .mobileTopbar {
+    display: flex;
+  }
+
+  /* Hamburger menu overrides */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .closeSidebarBtn {
+    display: block;
+  }
+
+  .mainContent {
+    padding: 1rem;
+  }
+}

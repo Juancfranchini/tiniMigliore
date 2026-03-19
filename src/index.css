@@ -71,3 +71,32 @@ img {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-brand-morado);
 }
+
+/* Responsive Breakpoints & Utilities */
+:root {
+  --bp-sm: 640px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+  --bp-xl: 1280px;
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+  
+  /* Utilities for spacing on mobile */
+  .mobile-px-4 { padding-left: 1rem !important; padding-right: 1rem !important; }
+  .mobile-py-4 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+  .mobile-stack { flex-direction: column !important; }
+  .mobile-text-center { text-align: center !important; }
+  .mobile-hide { display: none !important; }
+}
+
+/* Common wrapper for constrained content */
+.container-responsive {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  width: 100%;
+}

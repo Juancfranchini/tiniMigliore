@@ -10,6 +10,8 @@ import { Input } from '../../../components/ui/Input';
 import { Card, CardHeader, CardTitle, CardContent } from '../../../components/ui/Card';
 import { Modal } from '../../../components/ui/Modal';
 import { CheckCircle2 } from 'lucide-react';
+import { toast } from '../../../utils/toast';
+import styles from './CheckoutPage.module.css';
 
 const baseSchema = z.object({
   name: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
@@ -40,8 +42,6 @@ const checkoutSchema = baseSchema.superRefine((data, ctx) => {
     }
   }
 });
-
-import { toast } from '../../../utils/toast';
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 
@@ -101,22 +101,22 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div style={{ maxWidth: '1000px', margin: '3rem auto', padding: '0 1rem' }}>
-      <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', marginBottom: '2rem', color: 'var(--color-brand-morado)' }}>
+    <div className={styles.pageContainer}>
+      <h2 className={styles.pageTitle}>
         Finalizar Pedido
       </h2>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '2rem', alignItems: 'start' }}>
+      <div className={styles.mainGrid}>
         {/* Formulario de Checkout */}
         <Card>
           <CardHeader>
             <CardTitle>Detalles de Envío y Contacto</CardTitle>
           </CardHeader>
           <CardContent>
-            <form id="checkout-form" onSubmit={handleSubmit(onSubmit)} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <form id="checkout-form" onSubmit={handleSubmit(onSubmit)} className={styles.formContainer}>
               <div>
-                <h3 style={{ fontSize: '1.125rem', marginBottom: '1rem', color: 'var(--color-text-primary)' }}>Contacto</h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '1rem' }}>
+                <h3 className={styles.sectionTitle}>Contacto</h3>
+                <div className={styles.grid2Cols}>
                   <Input
                     label="Nombre Completo *"
                     placeholder="Ej. Ana Pérez"
@@ -141,12 +141,10 @@ export default function CheckoutPage() {
               </div>
 
               <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1.5rem', marginBottom: '1.5rem' }}>
-                <h3 style={{ fontSize: '1.125rem', marginBottom: '1rem', color: 'var(--color-text-primary)' }}>Método de Entrega</h3>
-                <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1fr)', gap: '1rem' }}>
-                  <label style={{
-                    display: 'flex', flexDirection: 'column', padding: '1rem',
+                <h3 className={styles.sectionTitle}>Método de Entrega</h3>
+                <div className={styles.grid2Cols}>
+                  <label className={styles.deliveryCard} style={{
                     border: `2px solid ${selectedDeliveryMethod === 'delivery' ? 'var(--color-brand-morado)' : 'var(--color-border)'}`,
-                    borderRadius: 'var(--radius-md)', cursor: 'pointer',
                     backgroundColor: selectedDeliveryMethod === 'delivery' ? 'var(--color-brand-crema)' : 'var(--color-surface)',
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>
@@ -158,10 +156,8 @@ export default function CheckoutPage() {
                     </span>
                   </label>
 
-                  <label style={{
-                    display: 'flex', flexDirection: 'column', padding: '1rem',
+                  <label className={styles.deliveryCard} style={{
                     border: `2px solid ${selectedDeliveryMethod === 'pickup' ? 'var(--color-brand-morado)' : 'var(--color-border)'}`,
-                    borderRadius: 'var(--radius-md)', cursor: 'pointer',
                     backgroundColor: selectedDeliveryMethod === 'pickup' ? 'var(--color-brand-crema)' : 'var(--color-surface)',
                   }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>
@@ -177,9 +173,9 @@ export default function CheckoutPage() {
 
               {selectedDeliveryMethod === 'delivery' && (
                 <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1.5rem' }}>
-                  <h3 style={{ fontSize: '1.125rem', marginBottom: '1rem', color: 'var(--color-text-primary)' }}>Dirección de Entrega</h3>
+                  <h3 className={styles.sectionTitle}>Dirección de Entrega</h3>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '3fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                  <div className={styles.gridAddress}>
                     <Input
                       label="Calle *"
                       placeholder="Ej. Av. Rivadavia"
@@ -194,7 +190,7 @@ export default function CheckoutPage() {
                     />
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                  <div className={styles.grid2Cols}>
                     <Input
                       label="Localidad / Barrio"
                       placeholder="Ej. Caballito"
@@ -209,7 +205,7 @@ export default function CheckoutPage() {
                     />
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem', marginBottom: '1rem' }}>
+                  <div className={styles.grid1Col}>
                     <Input
                       label="Provincia *"
                       error={errors.state?.message}
@@ -230,7 +226,7 @@ export default function CheckoutPage() {
         </Card>
 
         {/* Resumen del Carrito */}
-        <Card style={{ position: 'sticky', top: '5rem' }}>
+        <Card className={styles.summaryCard}>
           <CardHeader>
             <CardTitle>Resumen ({items.reduce((acc, i) => acc + i.quantity, 0)})</CardTitle>
           </CardHeader>
@@ -263,17 +259,6 @@ export default function CheckoutPage() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Basic responsive adjustment */}
-      <style>
-        {`
-          @media (max-width: 768px) {
-            div[style*="grid-template-columns: 1fr 350px"] {
-              grid-template-columns: 1fr !important;
-            }
-          }
-        `}
-      </style>
 
       {/* Premium Success Modal */}
       <Modal

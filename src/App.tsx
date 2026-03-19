@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import ShopLayout from './components/layouts/ShopLayout';
@@ -11,12 +12,37 @@ import AdminSettingsPage from './features/admin/pages/AdminSettingsPage';
 import LoginPage from './features/admin/pages/LoginPage';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { ToastContainer } from './components/ui/Toast/ToastContainer';
+import { useToastStore } from './store/toastStore';
+import { apiClient } from './services/api/client';
 
 // Public Pages
 import HomePage from './features/shop/pages/HomePage';
 import CheckoutPage from './features/shop/pages/CheckoutPage';
 
 function App() {
+  const addToast = useToastStore((state) => state.addToast);
+
+  useEffect(() => {
+    // Verificación simple para validar que el puente React -> Express está vivo
+    apiClient.healthCheck()
+      .then((isOk) => {
+        if (isOk) {
+          addToast({
+            type: 'success',
+            message: '🚀 Backend conectado correctamente',
+            duration: 4000
+          });
+        }
+      })
+      .catch(() => {
+        addToast({
+          type: 'error',
+          message: '⚠️ Error: No se pudo conectar al Backend',
+          duration: 6000
+        });
+      });
+  }, [addToast]);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -26,7 +52,7 @@ function App() {
         </Route>
 
         <Route path="/admin/login" element={<LoginPage />} />
-        
+
         <Route path="/admin" element={<ProtectedRoute />}>
           <Route element={<AdminLayout />}>
             <Route index element={<DashboardPage />} />

@@ -111,8 +111,8 @@ export default function AdminSectionsPage() {
         </Button>
       </div>
 
-      <div style={{ backgroundColor: 'var(--color-surface)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-sm)', overflow: 'hidden' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+      <div style={{ backgroundColor: 'var(--color-surface)', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-sm)', overflowX: 'auto' }}>
+        <table style={{ minWidth: '600px', width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
             <tr style={{ backgroundColor: 'var(--color-brand-crema)', borderBottom: '1px solid var(--color-border)' }}>
               <th style={{ padding: '1rem', color: 'var(--color-text-secondary)', fontWeight: 500 }}>ID</th>
