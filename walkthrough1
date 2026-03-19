@@ -1,0 +1,37 @@
+# Walkthrough de Implementación: Tini Migliore
+
+La primera versión de la arquitectura y fundaciones del código base han finalizado de acuerdo al Plan Inicial.
+
+## ¿Qué se ha implementado?
+
+### Fase 1: Core de Diseño de Interfaz (UI Kit)
+Se creó un kit de interfaz elegante con React.
+* **Sistema de colores:** Un archivo [variables.css](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/core/theme/variables.css) inyecta las variables principales (Crema, Lila, Morado).
+* **Componentes base:** Implementamos [Button](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/components/ui/Button.tsx#5-9), [Input](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/components/ui/Input.tsx#5-9), [Card](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/components/ui/Card.tsx#5-8) y [Modal](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/components/ui/Modal.tsx#17-102). Todo el proyecto se construye consumiendo estos componentes genéricos, garantizando coherencia visual y facilidad de desarrollo.
+
+### Fase 2: Layouts y Catálogo
+* **Enrutamiento (React Router):** Separamos completamente la SPA en dos dominios (`/` para la tienda pública y `/admin` para el panel).
+* **Servicios de Simulación (Mock):** En la carpeta [src/services/mock/catalog.ts](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/services/mock/catalog.ts) dejamos un servicio listo que emula el consumo a una API, simulando latencias y devolviendo los modelos de catálogo ([Product](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/core/types/catalog.ts#7-18), [Section](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/core/types/catalog.ts#19-26), [Banner](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/services/mock/catalog.ts#91-95)).
+* **Landing Page:** Componente de Banner principal configurable y lista de productos agrupados por secciones ([HomePage](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/features/shop/pages/HomePage.tsx#8-117)), junto a componentes modulares como [HeroBanner](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/features/shop/components/HeroBanner.tsx#12-93) y [ProductCard](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/features/shop/components/ProductCard.tsx#11-64).
+
+### Fase 3: Estado de Carrito y "Guest Checkout"
+* **Zustand Store:** Configuramos el carrito de compras global ([src/features/cart/store/cartStore.ts](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/features/cart/store/cartStore.ts)).
+* **Side Panel:** Al presionar Checkout se despliega el carrito.
+* **Formulario Seguro con Zod:** El [CheckoutPage](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/features/shop/pages/CheckoutPage.tsx#24-207) se montó con `.react-hook-form` integrado con Zod para forzar la declaración meticulosa de la dirección e información de contacto (nombres, localidad y código postal). Preparamos el terreno guardando como campo mandatorio el número de teléfono, para poder identificar clientes recurrentes tal cual se indicó en el requerimiento.
+
+### Fase 4: Panel Administrativo Base
+Se han establecido las bases (UI components) para gestionar la app en el futuro:
+* **Dashboard:** Un diseño de métricas limpio.
+* **Secciones de Gestión:** Listado de órdenes ([AdminOrdersPage](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/features/admin/pages/AdminOrdersPage.tsx#11-89)), listado de productos ([AdminProductsPage](file:///c:/Users/Juan%20Cruz%20IT%20Oeste/OneDrive/Desktop/jc/react/tiniMigliore/src/features/admin/pages/AdminProductsPage.tsx#6-75)), y secciones.
+
+### Siguientes Pasos
+Podés correr localmente el proyecto:
+```bash
+npm run dev
+```
+
+Y navegar a:
+* `http://localhost:5173/` (Tienda Principal)
+* `http://localhost:5173/admin` (Panel Administrativo)
+
+**¡Revisá la UI y los flujos e indicame si hay algo que te gustaría retocar!**

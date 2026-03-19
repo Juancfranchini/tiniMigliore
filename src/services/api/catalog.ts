@@ -1,0 +1,82 @@
+import { api } from '../../core/api/client';
+import type { 
+  Product, 
+  Section, 
+  BannerConfig, 
+  ContactConfig 
+} from '../../core/types/catalog';
+
+/**
+ * Servicio real que interactúa con el backend.
+ * Conserva EXACTAMENTE la misma firma que src/services/mock/catalog.ts
+ * para que los componentes de React no requieran cambios en su lógica.
+ */
+export const catalogService = {
+  
+  /**
+   * Obtiene todas las secciones activas ordenadas.
+   */
+  getSections: async (): Promise<Section[]> => {
+    return await api.get<Section[]>('/sections');
+  },
+
+  /**
+   * Crea una nueva sección.
+   */
+  createSection: async (data: Omit<Section, 'id'>): Promise<Section> => {
+    return await api.post<Section>('/sections', data);
+  },
+
+  /**
+   * Actualiza los datos de una sección existente.
+   */
+  updateSection: async (id: string, data: Partial<Section>): Promise<Section> => {
+    return await api.put<Section>(`/sections/${id}`, data);
+  },
+
+  /**
+   * Elimina una sección.
+   */
+  deleteSection: async (id: string): Promise<void> => {
+    await api.delete(`/sections/${id}`);
+  },
+
+  /**
+   * Obtiene productos de forma dinámica, opcionalmente filtrados por sección.
+   */
+  getProducts: async (sectionId?: string): Promise<Product[]> => {
+    // Si tenemos un sectionId enviamos un query param: /products?sectionId=123
+    const url = sectionId ? `/products?sectionId=${sectionId}` : '/products';
+    return await api.get<Product[]>(url);
+  },
+
+  /**
+   * Obtiene un producto individual por ID.
+   */
+  getProductById: async (id: string): Promise<Product | undefined> => {
+    try {
+      return await api.get<Product>(`/products/${id}`);
+    } catch (error) {
+      // Si el backend devuelve 404 para un producto que no existe
+      return undefined;
+    }
+  },
+
+  // --- CONFIGURACIÓN DE LA PÁGINA ---
+
+  getBanner: async (): Promise<BannerConfig> => {
+    return await api.get<BannerConfig>('/banner');
+  },
+
+  updateBanner: async (data: Partial<BannerConfig>): Promise<BannerConfig> => {
+    return await api.put<BannerConfig>('/banner', data);
+  },
+
+  getContact: async (): Promise<ContactConfig> => {
+    return await api.get<ContactConfig>('/contact');
+  },
+
+  updateContact: async (data: Partial<ContactConfig>): Promise<ContactConfig> => {
+    return await api.put<ContactConfig>('/contact', data);
+  }
+};

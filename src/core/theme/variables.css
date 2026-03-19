@@ -1,0 +1,43 @@
+:root {
+  /* Brand Colors - Refined */
+  --color-brand-crema: #F7F5F6;
+  --color-brand-lila: #A78AA6;
+  --color-brand-morado: #6F5B72;
+  --color-brand-acento: #7F4CA5;
+  --color-brand-hover: #6E3F93;
+
+  /* Neutrals */
+  --color-surface: #FFFFFF;
+  --color-text-primary: #4E4052; /* Texto oscuro elegante */
+  --color-text-secondary: #6F5B72; /* Subtle body text using morado */
+  --color-border: #E8E5E6; /* Slightly warmer border */
+
+  /* States */
+  --color-success: #10B981;
+  --color-error: #EF4444;
+
+  /* Typography */
+  --font-sans: 'Questrial', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Funnel Sans', Georgia, serif;
+
+  /* Spacing */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
