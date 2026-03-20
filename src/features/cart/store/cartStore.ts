@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { Product, ProductOption } from '../../../core/types/catalog';
 import { toast } from '../../../utils/toast';
-// import { catalogService } from '../../../services/mock/catalog'; // Will be needed for real cart validation
+// import { catalogService } from '../../../services/api/catalog'; // Will be needed for real cart validation
 import type { OrderItem } from '../../../core/types/order';
 
 interface CartState {

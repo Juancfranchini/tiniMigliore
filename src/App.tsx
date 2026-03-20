@@ -14,6 +14,7 @@ import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { ToastContainer } from './components/ui/Toast/ToastContainer';
 import { useToastStore } from './store/toastStore';
 import { apiClient } from './services/api/client';
+import { useSettingsStore } from './features/admin/store/settingsStore';
 
 // Public Pages
 import HomePage from './features/shop/pages/HomePage';
@@ -21,8 +22,13 @@ import CheckoutPage from './features/shop/pages/CheckoutPage';
 
 function App() {
   const addToast = useToastStore((state) => state.addToast);
+  const loadSettings = useSettingsStore((state) => state.loadSettings);
 
   useEffect(() => {
+    // Cargar settings iniciales de la app
+    loadSettings().catch(() => {
+       console.error('No se pudieron cargar configuraciones iniciales.');
+    });
     // Verificación simple para validar que el puente React -> Express está vivo
     apiClient.healthCheck()
       .then((isOk) => {

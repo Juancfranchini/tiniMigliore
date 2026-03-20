@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { useCartStore } from '../../cart/store/cartStore';
+import { useSettingsStore } from '../../admin/store/settingsStore';
 import { orderService } from '../../../services/mock/order';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
@@ -47,6 +48,7 @@ type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 
 export default function CheckoutPage() {
   const { items, getSubtotal, clearCart } = useCartStore();
+  const settings = useSettingsStore(state => state.settings);
   const navigate = useNavigate();
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
@@ -143,31 +145,35 @@ export default function CheckoutPage() {
               <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1.5rem', marginBottom: '1.5rem' }}>
                 <h3 className={styles.sectionTitle}>Método de Entrega</h3>
                 <div className={styles.grid2Cols}>
-                  <label className={styles.deliveryCard} style={{
-                    border: `2px solid ${selectedDeliveryMethod === 'delivery' ? 'var(--color-brand-morado)' : 'var(--color-border)'}`,
-                    backgroundColor: selectedDeliveryMethod === 'delivery' ? 'var(--color-brand-crema)' : 'var(--color-surface)',
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>
-                      <input type="radio" value="delivery" {...register('deliveryMethod')} style={{ accentColor: 'var(--color-brand-morado)' }} />
-                      Envío a Domicilio
-                    </div>
-                    <span style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginTop: '0.25rem' }}>
-                      Enviamos tu pedido a la puerta de tu casa.
-                    </span>
-                  </label>
+                  {settings?.checkout?.deliveryEnabled !== false && (
+                    <label className={styles.deliveryCard} style={{
+                      border: `2px solid ${selectedDeliveryMethod === 'delivery' ? 'var(--color-brand-morado)' : 'var(--color-border)'}`,
+                      backgroundColor: selectedDeliveryMethod === 'delivery' ? 'var(--color-brand-crema)' : 'var(--color-surface)',
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>
+                        <input type="radio" value="delivery" {...register('deliveryMethod')} style={{ accentColor: 'var(--color-brand-morado)' }} />
+                        Envío a Domicilio
+                      </div>
+                      <span style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginTop: '0.25rem' }}>
+                        Enviamos tu pedido a la puerta de tu casa.
+                      </span>
+                    </label>
+                  )}
 
-                  <label className={styles.deliveryCard} style={{
-                    border: `2px solid ${selectedDeliveryMethod === 'pickup' ? 'var(--color-brand-morado)' : 'var(--color-border)'}`,
-                    backgroundColor: selectedDeliveryMethod === 'pickup' ? 'var(--color-brand-crema)' : 'var(--color-surface)',
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>
-                      <input type="radio" value="pickup" {...register('deliveryMethod')} style={{ accentColor: 'var(--color-brand-morado)' }} />
-                      Retiro en Pastelería
-                    </div>
-                    <span style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginTop: '0.25rem' }}>
-                      Pasá a buscar tu pedido sin costo adicional.
-                    </span>
-                  </label>
+                  {settings?.checkout?.pickupEnabled !== false && (
+                    <label className={styles.deliveryCard} style={{
+                      border: `2px solid ${selectedDeliveryMethod === 'pickup' ? 'var(--color-brand-morado)' : 'var(--color-border)'}`,
+                      backgroundColor: selectedDeliveryMethod === 'pickup' ? 'var(--color-brand-crema)' : 'var(--color-surface)',
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>
+                        <input type="radio" value="pickup" {...register('deliveryMethod')} style={{ accentColor: 'var(--color-brand-morado)' }} />
+                        {settings?.checkout?.storePickupLabel || 'Retiro en Pastelería'}
+                      </div>
+                      <span style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', marginTop: '0.25rem' }}>
+                        Pasá a buscar tu pedido sin costo adicional.
+                      </span>
+                    </label>
+                  )}
                 </div>
               </div>
 
@@ -298,7 +304,7 @@ export default function CheckoutPage() {
             maxWidth: '430px',
             margin: '0 auto 2.5rem'
           }}>
-            Hemos registrado tu solicitud correctamente. Te enviamos un correo electrónico con los pasos a seguir para confirmar el pago y comenzar a preparar tu pedido (por favor, revisa tu casilla de spam). ¡Gracias por elegir Tini Migliore!
+            Hemos registrado tu solicitud correctamente. Te enviamos un correo electrónico con los pasos a seguir para confirmar el pago y comenzar a preparar tu pedido (por favor, revisa tu casilla de spam). ¡Gracias por elegir {settings?.branding?.businessName || 'nuestra pastelería'}!
           </p>
 
           <Button

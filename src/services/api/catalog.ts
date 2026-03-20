@@ -62,6 +62,27 @@ export const catalogService = {
     }
   },
 
+  /**
+   * Crea un nuevo producto.
+   */
+  createProduct: async (data: Omit<Product, 'id' | 'createdAt'>): Promise<Product> => {
+    return await api.post<Product>('/products', data);
+  },
+
+  /**
+   * Actualiza los datos de un producto existente.
+   */
+  updateProduct: async (id: string, data: Partial<Product>): Promise<Product> => {
+    return await api.put<Product>(`/products/${id}`, data);
+  },
+
+  /**
+   * Elimina un producto.
+   */
+  deleteProduct: async (id: string): Promise<void> => {
+    await api.delete(`/products/${id}`);
+  },
+
   // --- CONFIGURACIÓN DE LA PÁGINA ---
 
   getBanner: async (): Promise<BannerConfig> => {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../../components/ui/Card';
-import { catalogService } from '../../../services/mock/catalog';
+import { catalogService } from '../../../services/api/catalog';
 import type { BannerConfig, ContactConfig } from '../../../core/types/catalog';
 import { ImageUploader } from '../../../components/ui/ImageUploader';
 import type { CloudinaryImageDetails } from '../../../core/types/cloudinary';

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { catalogService } from '../../../services/mock/catalog';
+import { catalogService } from '../../../services/api/catalog';
 import type { Section } from '../../../core/types/catalog';
 import { Button } from '../../../components/ui/Button';
 import { Modal } from '../../../components/ui/Modal';

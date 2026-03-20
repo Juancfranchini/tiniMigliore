@@ -3,11 +3,13 @@ import { Outlet, Link } from 'react-router-dom';
 import { ShoppingBag, Menu, X } from 'lucide-react';
 import { useCartStore } from '../../features/cart/store/cartStore';
 import { CartSidebar } from '../../features/cart/components/CartSidebar';
+import { useSettingsStore } from '../../features/admin/store/settingsStore';
 import logoheader from '../../assets/logoheader.png';
 import styles from './ShopLayout.module.css';
 
 export default function ShopLayout() {
   const { items, openCart } = useCartStore();
+  const settings = useSettingsStore(state => state.settings);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const totalItems = items.reduce((acc, item) => acc + item.quantity, 0);
 
@@ -69,7 +71,7 @@ export default function ShopLayout() {
       </main>
 
       <footer className={styles.footerWrapper}>
-        <p style={{ fontFamily: 'var(--font-serif)' }}>&copy; {new Date().getFullYear()} Tini Migliore. Todos los derechos reservados.</p>
+        <p style={{ fontFamily: 'var(--font-serif)' }}>&copy; {new Date().getFullYear()} {settings?.branding?.businessName || 'Tini Migliore'}. Todos los derechos reservados.</p>
         <p style={{ fontSize: '0.875rem', marginTop: '0.5rem' }}>Tu momento dulce merece una obra de arte.</p>
       </footer>
       

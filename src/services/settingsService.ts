@@ -1,6 +1,5 @@
 import type { AppSettings } from '../types/settings';
-
-const SETTINGS_STORAGE_KEY = 'tinimigliore_settings';
+import { api } from '../core/api/client';
 
 const defaultSettings: AppSettings = {
   branding: {
@@ -38,33 +37,26 @@ const defaultSettings: AppSettings = {
 };
 
 export const getSettings = async (): Promise<AppSettings> => {
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 300));
-  
-  const stored = localStorage.getItem(SETTINGS_STORAGE_KEY);
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored);
-      // Merge with defaultSettings to ensure all fields exist
+  try {
+    const data = await api.get<AppSettings>('/settings');
+    // Si backend devuelve un objeto validamos combinando con defaultSettings
+    if (data && Object.keys(data).length > 0) {
       return {
-        branding: { ...defaultSettings.branding, ...(parsed.branding || {}) },
-        contact: { ...defaultSettings.contact, ...(parsed.contact || {}) },
-        media: { ...defaultSettings.media, ...(parsed.media || {}) },
-        checkout: { ...defaultSettings.checkout, ...(parsed.checkout || {}) },
-        notifications: { ...defaultSettings.notifications, ...(parsed.notifications || {}) },
-        maps: { ...defaultSettings.maps, ...(parsed.maps || {}) },
+        branding: { ...defaultSettings.branding, ...(data.branding || {}) },
+        contact: { ...defaultSettings.contact, ...(data.contact || {}) },
+        media: { ...defaultSettings.media, ...(data.media || {}) },
+        checkout: { ...defaultSettings.checkout, ...(data.checkout || {}) },
+        notifications: { ...defaultSettings.notifications, ...(data.notifications || {}) },
+        maps: { ...defaultSettings.maps, ...(data.maps || {}) },
       };
-    } catch (e) {
-      console.error('Failed to parse settings from localStorage', e);
     }
+    return defaultSettings;
+  } catch (e) {
+    console.error('Failed to fetch settings from API, using default', e);
+    return defaultSettings; // Volver a los default si falla la petición
   }
-  
-  return defaultSettings;
 };
 
 export const saveSettings = async (settings: AppSettings): Promise<void> => {
-  // Simulate network delay
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  localStorage.setItem(SETTINGS_STORAGE_KEY, JSON.stringify(settings));
+  await api.put<AppSettings>('/settings', settings);
 };

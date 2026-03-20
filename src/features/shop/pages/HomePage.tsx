@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { HeroBanner } from '../components/HeroBanner';
 import { ProductCard } from '../components/ProductCard';
 import { ContactSection } from '../components/ContactSection';
-import { catalogService } from '../../../services/mock/catalog';
+import { catalogService } from '../../../services/api/catalog';
 import type { Section, Product, BannerConfig, ContactConfig } from '../../../core/types/catalog';
 import { useCartStore } from '../../cart/store/cartStore';
 
@@ -84,7 +84,7 @@ export default function HomePage() {
            </p>
         </div>
 
-        {sections.map(section => {
+        {sections.filter(s => s.isActive).map(section => {
           const sectionProducts = products.filter(p => p.sectionId === section.id);
           
           if (sectionProducts.length === 0) return null;
