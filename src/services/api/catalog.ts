@@ -87,10 +87,12 @@ export const catalogService = {
 
   getBanner: async (): Promise<BannerConfig> => {
     try {
-      const result = await api.get<BannerConfig>('/banner');
-      // Aseguramos que si el backend devuelve parseado null/vacío, tenga defaults
-      if (!result || !result.id) throw new Error('Empty');
-      return result;
+      // Usamos el endpoint genérico /settings del backend
+      const settingsResult = await api.get<any>('/settings');
+      if (settingsResult?.landing?.banner) {
+        return settingsResult.landing.banner;
+      }
+      throw new Error('Empty');
     } catch (error) {
       return {
         id: 'banner-default',
@@ -108,14 +110,19 @@ export const catalogService = {
   },
 
   updateBanner: async (data: Partial<BannerConfig>): Promise<BannerConfig> => {
-    return await api.put<BannerConfig>('/banner', data);
+    // Upsert guardando específicamente `landing.banner` vía el flattening de la DB
+    await api.put<any>('/settings', { landing: { banner: data } });
+    return data as BannerConfig;
   },
 
   getContact: async (): Promise<ContactConfig> => {
     try {
-      const result = await api.get<ContactConfig>('/contact');
-      if (!result || !result.id) throw new Error('Empty');
-      return result;
+      // Usamos el endpoint genérico /settings del backend
+      const settingsResult = await api.get<any>('/settings');
+      if (settingsResult?.landing?.contact) {
+        return settingsResult.landing.contact;
+      }
+      throw new Error('Empty');
     } catch (error) {
       return {
         id: 'contact-default',
@@ -127,6 +134,8 @@ export const catalogService = {
   },
 
   updateContact: async (data: Partial<ContactConfig>): Promise<ContactConfig> => {
-    return await api.put<ContactConfig>('/contact', data);
+    // Upsert guardando específicamente `landing.contact` vía el flattening de la DB
+    await api.put<any>('/settings', { landing: { contact: data } });
+    return data as ContactConfig;
   }
 };
