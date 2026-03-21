@@ -27,11 +27,31 @@ export const catalogService = {
   },
 
   createSection: async (data: Omit<Section, 'id'>): Promise<Section> => {
-    return await api.post<Section>('/sections', data);
+    const payload = {
+      ...data,
+      is_active: data.isActive,
+      order_num: data.order
+    };
+    const s = await api.post<any>('/sections', payload);
+    return {
+      ...s,
+      isActive: s.isActive ?? s.is_active ?? true,
+      id: s.id?.toString() ?? ''
+    };
   },
 
   updateSection: async (id: string, data: Partial<Section>): Promise<Section> => {
-    return await api.put<Section>(`/sections/${id}`, data);
+    const payload = {
+      ...data,
+      ...(data.isActive !== undefined && { is_active: data.isActive }),
+      ...(data.order !== undefined && { order_num: data.order })
+    };
+    const s = await api.put<any>(`/sections/${id}`, payload);
+    return {
+      ...s,
+      isActive: s.isActive ?? s.is_active ?? true,
+      id: s.id?.toString() ?? ''
+    };
   },
 
   deleteSection: async (id: string): Promise<void> => {
@@ -68,11 +88,37 @@ export const catalogService = {
   },
 
   createProduct: async (data: Omit<Product, 'id' | 'createdAt'>): Promise<Product> => {
-    return await api.post<Product>('/products', data);
+    const payload = {
+      ...data,
+      section_id: data.sectionId,
+      image_url: data.imageUrl,
+      is_active: data.isActive
+    };
+    const p = await api.post<any>('/products', payload);
+    return {
+      ...p,
+      isActive: p.isActive ?? p.is_active ?? true,
+      imageUrl: p.imageUrl ?? p.image_url ?? '',
+      sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
+      id: p.id?.toString() ?? ''
+    };
   },
 
   updateProduct: async (id: string, data: Partial<Product>): Promise<Product> => {
-    return await api.put<Product>(`/products/${id}`, data);
+    const payload = {
+      ...data,
+      ...(data.sectionId !== undefined && { section_id: data.sectionId }),
+      ...(data.imageUrl !== undefined && { image_url: data.imageUrl }),
+      ...(data.isActive !== undefined && { is_active: data.isActive })
+    };
+    const p = await api.put<any>(`/products/${id}`, payload);
+    return {
+      ...p,
+      isActive: p.isActive ?? p.is_active ?? true,
+      imageUrl: p.imageUrl ?? p.image_url ?? '',
+      sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
+      id: p.id?.toString() ?? ''
+    };
   },
 
   deleteProduct: async (id: string): Promise<void> => {
