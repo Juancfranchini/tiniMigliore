@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { Product, ProductOption } from '../../../core/types/catalog';
-import { toast } from '../../../utils/toast';
+
 // import { catalogService } from '../../../services/api/catalog'; // Will be needed for real cart validation
 import type { OrderItem } from '../../../core/types/order';
 
@@ -22,10 +22,6 @@ export const useCartStore = create<CartState>((set, get) => ({
   openCart: () => set({ isOpen: true }),
   closeCart: () => set({ isOpen: false }),
   addItem: (product, options = []) => {
-    if (!product.isActive) {
-      toast.warning('Lo sentimos, este producto se encuentra agotado actualmente.');
-      return;
-    }
     set((state) => {
       // Very basic equality check for options. Proper compare might be needed if complex options.
       // For now, assume same product + same options = increase quantity, else add new line.

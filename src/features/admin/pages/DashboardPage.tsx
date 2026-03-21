@@ -85,7 +85,7 @@ export default function DashboardPage() {
     : 0;
 
   // 4. Products
-  const activeProductsCount = products.filter(p => p.isActive).length;
+  const activeProductsCount = products.length;
 
   // 5. Recent Orders
   const recentOrders = orders.slice(0, 5); // Assuming the service returns them sorted newest first

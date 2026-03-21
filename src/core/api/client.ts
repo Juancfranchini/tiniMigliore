@@ -33,6 +33,7 @@ export const apiClient = async <T>(endpoint: string, options: RequestInit = {}):
       try {
         const errorData = await response.json();
         if (errorData.message) errorMessage = errorData.message;
+        else if (errorData.error) errorMessage = errorData.error;
       } catch {
         // Si no es JSON, mantenemos el error genérico
       }

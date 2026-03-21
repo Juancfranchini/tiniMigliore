@@ -80,15 +80,15 @@ export default function AdminSectionsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm('¿Estás seguro de que deseas eliminar esta sección? Esto podría afectar a los productos asociados.')) return;
+    if (!window.confirm('¿Estás seguro de que deseas eliminar esta sección de forma permanente?')) return;
     
     try {
       await catalogService.deleteSection(id);
       await loadSections();
       toast.success('Sección eliminada');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error deleting section:', error);
-      toast.error('Error al eliminar la sección.');
+      toast.error(error.message || 'Error al eliminar la sección.');
     }
   };
 
