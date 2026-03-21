@@ -2,7 +2,7 @@
  * Cliente de API base para conectar el frontend con el backend.
  * Utiliza VITE_API_URL desde las variables de entorno.
  */
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:3000/api' : '');
 
 export const apiClient = {
   /**
