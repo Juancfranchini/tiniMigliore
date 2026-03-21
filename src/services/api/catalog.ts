@@ -17,124 +17,148 @@ export const catalogService = {
    * Obtiene todas las secciones activas ordenadas.
    */
   getSections: async (): Promise<Section[]> => {
-    return await api.get<Section[]>('/sections');
+    const data = await api.get<any>('/sections');
+    if (!Array.isArray(data)) return [];
+    return data.map(s => ({
+      ...s,
+      isActive: s.isActive ?? s.is_active ?? true,
+      id: s.id?.toString() ?? ''
+    }));
   },
 
-  /**
-   * Crea una nueva sección.
-   */
   createSection: async (data: Omit<Section, 'id'>): Promise<Section> => {
     return await api.post<Section>('/sections', data);
   },
 
-  /**
-   * Actualiza los datos de una sección existente.
-   */
   updateSection: async (id: string, data: Partial<Section>): Promise<Section> => {
     return await api.put<Section>(`/sections/${id}`, data);
   },
 
-  /**
-   * Elimina una sección.
-   */
   deleteSection: async (id: string): Promise<void> => {
     await api.delete(`/sections/${id}`);
   },
 
-  /**
-   * Obtiene productos de forma dinámica, opcionalmente filtrados por sección.
-   */
   getProducts: async (sectionId?: string): Promise<Product[]> => {
-    // Si tenemos un sectionId enviamos un query param: /products?sectionId=123
     const url = sectionId ? `/products?sectionId=${sectionId}` : '/products';
-    return await api.get<Product[]>(url);
+    const data = await api.get<any>(url);
+    if (!Array.isArray(data)) return [];
+    return data.map(p => ({
+      ...p,
+      isActive: p.isActive ?? p.is_active ?? true,
+      imageUrl: p.imageUrl ?? p.image_url ?? '',
+      sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
+      id: p.id?.toString() ?? ''
+    }));
   },
 
-  /**
-   * Obtiene un producto individual por ID.
-   */
   getProductById: async (id: string): Promise<Product | undefined> => {
     try {
-      return await api.get<Product>(`/products/${id}`);
+      const p = await api.get<any>(`/products/${id}`);
+      if (!p) return undefined;
+      return {
+        ...p,
+        isActive: p.isActive ?? p.is_active ?? true,
+        imageUrl: p.imageUrl ?? p.image_url ?? '',
+        sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
+        id: p.id?.toString() ?? ''
+      };
     } catch (error) {
-      // Si el backend devuelve 404 para un producto que no existe
       return undefined;
     }
   },
 
-  /**
-   * Crea un nuevo producto.
-   */
   createProduct: async (data: Omit<Product, 'id' | 'createdAt'>): Promise<Product> => {
     return await api.post<Product>('/products', data);
   },
 
-  /**
-   * Actualiza los datos de un producto existente.
-   */
   updateProduct: async (id: string, data: Partial<Product>): Promise<Product> => {
     return await api.put<Product>(`/products/${id}`, data);
   },
 
-  /**
-   * Elimina un producto.
-   */
   deleteProduct: async (id: string): Promise<void> => {
     await api.delete(`/products/${id}`);
   },
 
-  // --- CONFIGURACIÓN DE LA PÁGINA ---
-
   getBanner: async (): Promise<BannerConfig> => {
+    const defaultBanner: BannerConfig = {
+      id: 'banner-default',
+      imageUrl: '',
+      title: '',
+      subtitle: '',
+      callToActionText: '',
+      callToActionUrl: '',
+      showTitle: true,
+      showSubtitle: true,
+      showCta: true,
+      isActive: false
+    };
+
     try {
-      // Usamos el endpoint genérico /settings del backend
       const settingsResult = await api.get<any>('/settings');
-      if (settingsResult?.landing?.banner) {
-        return settingsResult.landing.banner;
+      let bannerData = null;
+
+      if (Array.isArray(settingsResult)) {
+        settingsResult.forEach(item => {
+          if (item.key === 'landing.banner' && typeof item.value === 'object') bannerData = item.value;
+          else if (item.key === 'landing.banner' && typeof item.value === 'string') {
+            try { bannerData = JSON.parse(item.value); } catch {}
+          } else if (item.key === 'landing' && typeof item.value === 'object') {
+            bannerData = item.value.banner;
+          }
+        });
+      } else if (settingsResult && typeof settingsResult === 'object') {
+        bannerData = settingsResult.landing?.banner || settingsResult.banner;
       }
-      throw new Error('Empty');
+
+      if (bannerData) {
+        return { ...defaultBanner, ...bannerData };
+      }
+      return defaultBanner;
     } catch (error) {
-      return {
-        id: 'banner-default',
-        imageUrl: '',
-        title: '',
-        subtitle: '',
-        callToActionText: '',
-        callToActionUrl: '',
-        showTitle: true,
-        showSubtitle: true,
-        showCta: true,
-        isActive: false
-      };
+      return defaultBanner;
     }
   },
 
   updateBanner: async (data: Partial<BannerConfig>): Promise<BannerConfig> => {
-    // Upsert guardando específicamente `landing.banner` vía el flattening de la DB
     await api.put<any>('/settings', { landing: { banner: data } });
     return data as BannerConfig;
   },
 
   getContact: async (): Promise<ContactConfig> => {
+    const defaultContact: ContactConfig = {
+      id: 'contact-default',
+      text: '',
+      imageUrl: '',
+      isActive: false
+    };
+
     try {
-      // Usamos el endpoint genérico /settings del backend
       const settingsResult = await api.get<any>('/settings');
-      if (settingsResult?.landing?.contact) {
-        return settingsResult.landing.contact;
+      let contactData = null;
+
+      if (Array.isArray(settingsResult)) {
+        settingsResult.forEach(item => {
+          if (item.key === 'landing.contact' && typeof item.value === 'object') contactData = item.value;
+          else if (item.key === 'landing.contact' && typeof item.value === 'string') {
+            try { contactData = JSON.parse(item.value); } catch {}
+          } else if (item.key === 'landing' && typeof item.value === 'object') {
+            contactData = item.value.contact;
+          }
+        });
+      } else if (settingsResult && typeof settingsResult === 'object') {
+        contactData = settingsResult.landing?.contact || settingsResult.contact;
       }
-      throw new Error('Empty');
+
+      if (contactData) {
+        return { ...defaultContact, ...contactData };
+      }
+      return defaultContact;
     } catch (error) {
-      return {
-        id: 'contact-default',
-        text: '',
-        imageUrl: '',
-        isActive: false
-      };
+      return defaultContact;
     }
   },
 
   updateContact: async (data: Partial<ContactConfig>): Promise<ContactConfig> => {
-    // Upsert guardando específicamente `landing.contact` vía el flattening de la DB
     await api.put<any>('/settings', { landing: { contact: data } });
     return data as ContactConfig;
   }
