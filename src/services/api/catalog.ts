@@ -86,7 +86,25 @@ export const catalogService = {
   // --- CONFIGURACIÓN DE LA PÁGINA ---
 
   getBanner: async (): Promise<BannerConfig> => {
-    return await api.get<BannerConfig>('/banner');
+    try {
+      const result = await api.get<BannerConfig>('/banner');
+      // Aseguramos que si el backend devuelve parseado null/vacío, tenga defaults
+      if (!result || !result.id) throw new Error('Empty');
+      return result;
+    } catch (error) {
+      return {
+        id: 'banner-default',
+        imageUrl: '',
+        title: '',
+        subtitle: '',
+        callToActionText: '',
+        callToActionUrl: '',
+        showTitle: true,
+        showSubtitle: true,
+        showCta: true,
+        isActive: false
+      };
+    }
   },
 
   updateBanner: async (data: Partial<BannerConfig>): Promise<BannerConfig> => {
@@ -94,7 +112,18 @@ export const catalogService = {
   },
 
   getContact: async (): Promise<ContactConfig> => {
-    return await api.get<ContactConfig>('/contact');
+    try {
+      const result = await api.get<ContactConfig>('/contact');
+      if (!result || !result.id) throw new Error('Empty');
+      return result;
+    } catch (error) {
+      return {
+        id: 'contact-default',
+        text: '',
+        imageUrl: '',
+        isActive: false
+      };
+    }
   },
 
   updateContact: async (data: Partial<ContactConfig>): Promise<ContactConfig> => {
