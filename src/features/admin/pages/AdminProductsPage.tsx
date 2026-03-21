@@ -27,7 +27,6 @@ export default function AdminProductsPage() {
     sectionId: '',
     imageUrl: '',
     imageDetails: undefined as CloudinaryImageDetails | undefined,
-    isActive: true,
   });
 
   const loadData = async () => {
@@ -59,8 +58,7 @@ export default function AdminProductsPage() {
       price: 0, 
       sectionId: sections.length > 0 ? sections[0].id : '', 
       imageUrl: '', 
-      imageDetails: undefined,
-      isActive: true 
+      imageDetails: undefined
     });
     setIsModalOpen(true);
   };
@@ -73,8 +71,7 @@ export default function AdminProductsPage() {
       price: prod.price, 
       sectionId: prod.sectionId, 
       imageUrl: prod.imageUrl, 
-      imageDetails: prod.imageDetails,
-      isActive: prod.isActive 
+      imageDetails: prod.imageDetails
     });
     setIsModalOpen(true);
   };
@@ -165,7 +162,6 @@ export default function AdminProductsPage() {
               <th style={{ padding: '1rem', color: 'var(--color-text-secondary)', fontWeight: 500 }}>Producto</th>
               <th style={{ padding: '1rem', color: 'var(--color-text-secondary)', fontWeight: 500 }}>Sección</th>
               <th style={{ padding: '1rem', color: 'var(--color-text-secondary)', fontWeight: 500 }}>Precio</th>
-              <th style={{ padding: '1rem', color: 'var(--color-text-secondary)', fontWeight: 500 }}>Estado</th>
               <th style={{ padding: '1rem', color: 'var(--color-text-secondary)', fontWeight: 500, textAlign: 'right' }}>Acciones</th>
             </tr>
           </thead>
@@ -178,7 +174,7 @@ export default function AdminProductsPage() {
               </tr>
             ) : products.length === 0 ? (
                <tr>
-                <td colSpan={5} style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
+                <td colSpan={4} style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-secondary)' }}>
                   Aún no hay productos creados.
                 </td>
               </tr>
@@ -203,18 +199,6 @@ export default function AdminProductsPage() {
                   </td>
                   <td style={{ padding: '1rem', color: 'var(--color-text-primary)' }}>
                     {formatPrice(product.price)}
-                  </td>
-                  <td style={{ padding: '1rem' }}>
-                    <span style={{ 
-                      backgroundColor: product.isActive ? '#D1FAE5' : '#FEE2E2', 
-                      color: product.isActive ? '#065F46' : '#991B1B', 
-                      padding: '0.25rem 0.5rem', 
-                      borderRadius: 'var(--radius-full)', 
-                      fontSize: '0.75rem', 
-                      fontWeight: 500 
-                    }}>
-                      {product.isActive ? 'Activo' : 'Inactivo'}
-                    </span>
                   </td>
                   <td style={{ padding: '1rem', textAlign: 'right', display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
                     <Button variant="outline" size="sm" onClick={() => openEditModal(product)}>
@@ -320,16 +304,6 @@ export default function AdminProductsPage() {
               }}
             />
           </div>
-
-          <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', marginTop: '0.5rem' }}>
-            <input 
-              type="checkbox" 
-              name="isActive"
-              checked={formData.isActive}
-              onChange={handleInputChange}
-            />
-            <span style={{ color: 'var(--color-text-primary)' }}>Producto activo (visible en el catálogo)</span>
-          </label>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1.5rem' }}>
             <Button type="button" variant="ghost" onClick={closeModal} disabled={isSaving}>

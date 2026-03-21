@@ -15,7 +15,6 @@ export interface Product {
   imageUrl: string;
   imageDetails?: CloudinaryImageDetails;
   options?: ProductOption[];
-  isActive: boolean;
   createdAt: string;
 }
 

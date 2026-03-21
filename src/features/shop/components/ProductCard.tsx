@@ -17,7 +17,7 @@ export function ProductCard({ product, onAdd, onClick }: ProductCardProps) {
     }).format(price);
   };
 
-  const isAvailable = product.isActive;
+  const isAvailable = true;
 
   return (
     <Card hoverable style={{ height: '100%', opacity: isAvailable ? 1 : 0.9 }}>

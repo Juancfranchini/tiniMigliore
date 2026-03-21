@@ -15,7 +15,6 @@ const INITIAL_PRODUCTS: Product[] = [
     description: 'Masa sablée con abundante crema pastelera y frutillas frescas fileteadas.',
     price: 8500,
     imageUrl: 'https://images.unsplash.com/photo-1519869325930-281384150729?auto=format&fit=crop&q=80&w=800',
-    isActive: true,
     createdAt: new Date().toISOString()
   },
   {
@@ -25,7 +24,6 @@ const INITIAL_PRODUCTS: Product[] = [
     description: 'Suave crema de limón sobre base crocante, coronada con merengue italiano.',
     price: 7900,
     imageUrl: 'https://images.unsplash.com/photo-1519915028121-7d3463d20a1b?auto=format&fit=crop&q=80&w=800',
-    isActive: true,
     createdAt: new Date().toISOString()
   },
   {
@@ -35,7 +33,6 @@ const INITIAL_PRODUCTS: Product[] = [
     description: 'Intensa torta húmeda de chocolate amargo, servida con frutos rojos.',
     price: 9200,
     imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=800',
-    isActive: true,
     options: [
       { id: 'opt-1', name: 'Extra Coulis de Frutos Rojos', priceOffset: 800 },
       { id: 'opt-2', name: 'Bocha de Helado (Aparte)', priceOffset: 1500 }
@@ -49,7 +46,6 @@ const INITIAL_PRODUCTS: Product[] = [
     description: 'Caja premium con 6 macarons de sabores surtidos (pistacho, frambuesa, chocolate, limón).',
     price: 6500,
     imageUrl: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&q=80&w=800',
-    isActive: true,
     createdAt: new Date().toISOString()
   }
 ];

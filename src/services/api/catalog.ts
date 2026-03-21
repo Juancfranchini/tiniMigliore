@@ -64,7 +64,6 @@ export const catalogService = {
     if (!Array.isArray(data)) return [];
     return data.map(p => ({
       ...p,
-      isActive: p.isActive ?? p.is_active ?? true,
       imageUrl: p.imageUrl ?? p.image_url ?? '',
       sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
       id: p.id?.toString() ?? ''
@@ -77,7 +76,6 @@ export const catalogService = {
       if (!p) return undefined;
       return {
         ...p,
-        isActive: p.isActive ?? p.is_active ?? true,
         imageUrl: p.imageUrl ?? p.image_url ?? '',
         sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
         id: p.id?.toString() ?? ''
@@ -91,13 +89,11 @@ export const catalogService = {
     const payload = {
       ...data,
       section_id: data.sectionId,
-      image_url: data.imageUrl,
-      is_active: data.isActive
+      image_url: data.imageUrl
     };
     const p = await api.post<any>('/products', payload);
     return {
       ...p,
-      isActive: p.isActive ?? p.is_active ?? true,
       imageUrl: p.imageUrl ?? p.image_url ?? '',
       sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
       id: p.id?.toString() ?? ''
@@ -108,13 +104,11 @@ export const catalogService = {
     const payload = {
       ...data,
       ...(data.sectionId !== undefined && { section_id: data.sectionId }),
-      ...(data.imageUrl !== undefined && { image_url: data.imageUrl }),
-      ...(data.isActive !== undefined && { is_active: data.isActive })
+      ...(data.imageUrl !== undefined && { image_url: data.imageUrl })
     };
     const p = await api.put<any>(`/products/${id}`, payload);
     return {
       ...p,
-      isActive: p.isActive ?? p.is_active ?? true,
       imageUrl: p.imageUrl ?? p.image_url ?? '',
       sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
       id: p.id?.toString() ?? ''
