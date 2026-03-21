@@ -4,6 +4,7 @@ import { LayoutDashboard, Package, Tag, ShoppingCart, LogOut, LayoutTemplate, Se
 import { cn } from '../../utils/cn';
 import { useAuthStore } from '../../features/admin/store/authStore';
 import logo from '../../assets/logoheader.png';
+import { ErrorBoundary } from '../ui/ErrorBoundary';
 import styles from './AdminLayout.module.css';
 
 export default function AdminLayout() {
@@ -86,7 +87,9 @@ export default function AdminLayout() {
       <div className={styles.mainWrapper}>
         <main className={styles.mainContent}>
           <div className={styles.contentContainer}>
-            <Outlet />
+            <ErrorBoundary>
+              <Outlet />
+            </ErrorBoundary>
           </div>
         </main>
       </div>

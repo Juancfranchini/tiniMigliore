@@ -5,6 +5,7 @@ import { useCartStore } from '../../features/cart/store/cartStore';
 import { CartSidebar } from '../../features/cart/components/CartSidebar';
 import { useSettingsStore } from '../../features/admin/store/settingsStore';
 import logoheader from '../../assets/logoheader.png';
+import { ErrorBoundary } from '../ui/ErrorBoundary';
 import styles from './ShopLayout.module.css';
 
 export default function ShopLayout() {
@@ -67,7 +68,9 @@ export default function ShopLayout() {
       </header>
       
       <main className={styles.mainContent}>
-         <Outlet />
+         <ErrorBoundary>
+           <Outlet />
+         </ErrorBoundary>
       </main>
 
       <footer className={styles.footerWrapper}>

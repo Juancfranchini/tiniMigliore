@@ -16,7 +16,7 @@ export default function AdminOrdersPage() {
     try {
       setLoading(true);
       const data = await orderService.getOrders();
-      setOrders(data);
+      setOrders(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching orders:", error);
     } finally {
