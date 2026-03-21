@@ -44,7 +44,14 @@ export const apiClient = async <T>(endpoint: string, options: RequestInit = {}):
       return {} as T; 
     }
 
-    return await response.json() as T;
+    const data = await response.json();
+    
+    // Normalizar si el backend devuelve un wrapper tipo { success: true, data: [...] }
+    if (data && typeof data === 'object' && 'data' in data) {
+      return data.data as T;
+    }
+
+    return data as T;
   } catch (error) {
     // Aquí podríamos agregar lógica extra como reportar a un servicio como Sentry
     console.error(`[API Client Error] fetching ${url}:`, error);

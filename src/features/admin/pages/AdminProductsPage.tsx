@@ -37,8 +37,8 @@ export default function AdminProductsPage() {
         catalogService.getProducts(),
         catalogService.getSections()
       ]);
-      setProducts(productsData);
-      setSections(sectionsData);
+      setProducts(Array.isArray(productsData) ? productsData : []);
+      setSections(Array.isArray(sectionsData) ? sectionsData : []);
     } catch (error) {
       console.error('Error loading data:', error);
       toast.error('Error al cargar datos');

@@ -27,8 +27,8 @@ export default function HomePage() {
         
         setBanner(bannerData);
         setContact(contactData);
-        setSections(sectionsData);
-        setProducts(productsData);
+        setSections(Array.isArray(sectionsData) ? sectionsData : []);
+        setProducts(Array.isArray(productsData) ? productsData : []);
       } catch (error) {
         console.error("Error fetching homepage data:", error);
       } finally {

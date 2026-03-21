@@ -18,8 +18,8 @@ export default function DashboardPage() {
           orderService.getOrders(),
           catalogService.getProducts()
         ]);
-        setOrders(ordersData);
-        setProducts(productsData);
+        setOrders(Array.isArray(ordersData) ? ordersData : []);
+        setProducts(Array.isArray(productsData) ? productsData : []);
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
       } finally {

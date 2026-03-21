@@ -28,7 +28,7 @@ export default function AdminSectionsPage() {
     setIsLoading(true);
     try {
       const data = await catalogService.getSections();
-      setSections(data);
+      setSections(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error loading sections:', error);
       toast.error('Error al cargar secciones');
