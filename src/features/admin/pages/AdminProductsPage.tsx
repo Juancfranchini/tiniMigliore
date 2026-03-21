@@ -3,6 +3,7 @@ import { catalogService } from '../../../services/api/catalog';
 import type { Product, Section } from '../../../core/types/catalog';
 import { Button } from '../../../components/ui/Button';
 import { Modal } from '../../../components/ui/Modal';
+import { ConfirmDialog } from '../../../components/ui/ConfirmDialog';
 import { Input } from '../../../components/ui/Input';
 import { Plus, Pencil, Trash2, Image as ImageIcon } from 'lucide-react';
 import { ImageUploader } from '../../../components/ui/ImageUploader';
@@ -18,6 +19,11 @@ export default function AdminProductsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Confirm Delete state
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -107,16 +113,25 @@ export default function AdminProductsPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!window.confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
-    
+  const handleDeleteRequest = (id: string) => {
+    setProductToDelete(id);
+    setDeleteConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!productToDelete) return;
+    setIsDeleting(true);
     try {
-      await catalogService.deleteProduct(id);
+      await catalogService.deleteProduct(productToDelete);
       await loadData();
       toast.success('Producto eliminado correctamente');
+      setDeleteConfirmOpen(false);
+      setProductToDelete(null);
     } catch (error) {
       console.error('Error deleting product:', error);
       toast.error('Error al eliminar el producto.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -204,7 +219,7 @@ export default function AdminProductsPage() {
                     <Button variant="outline" size="sm" onClick={() => openEditModal(product)}>
                       <Pencil size={14} style={{ marginRight: '0.25rem' }} /> Editar
                     </Button>
-                    <Button variant="outline" size="sm" style={{ color: 'var(--color-error)', borderColor: 'var(--color-error)' }} onClick={() => handleDelete(product.id)}>
+                    <Button variant="outline" size="sm" style={{ color: 'var(--color-error)', borderColor: 'var(--color-error)' }} onClick={() => handleDeleteRequest(product.id)}>
                       <Trash2 size={14} style={{ marginRight: '0.25rem' }} /> Eliminar
                     </Button>
                   </td>
@@ -315,6 +330,18 @@ export default function AdminProductsPage() {
           </div>
         </form>
       </Modal>
+
+      <ConfirmDialog
+        isOpen={deleteConfirmOpen}
+        onClose={() => setDeleteConfirmOpen(false)}
+        onConfirm={confirmDelete}
+        title="Eliminar producto"
+        message="¿Estás seguro de que deseas eliminar este producto permanentemente? Esta acción no se puede deshacer."
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+        type="danger"
+        isConfirming={isDeleting}
+      />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { catalogService } from '../../../services/api/catalog';
 import type { Section } from '../../../core/types/catalog';
 import { Button } from '../../../components/ui/Button';
 import { Modal } from '../../../components/ui/Modal';
+import { ConfirmDialog } from '../../../components/ui/ConfirmDialog';
 import { Input } from '../../../components/ui/Input';
 import { Pencil, Trash2, Plus } from 'lucide-react';
 import { toast } from '../../../utils/toast';
@@ -15,6 +16,11 @@ export default function AdminSectionsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingSection, setEditingSection] = useState<Section | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  // Confirm Delete state
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [sectionToDelete, setSectionToDelete] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -79,16 +85,26 @@ export default function AdminSectionsPage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!window.confirm('¿Estás seguro de que deseas eliminar esta sección de forma permanente?')) return;
+  const handleDeleteRequest = (id: string) => {
+    setSectionToDelete(id);
+    setDeleteConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!sectionToDelete) return;
+    setIsDeleting(true);
     
     try {
-      await catalogService.deleteSection(id);
+      await catalogService.deleteSection(sectionToDelete);
       await loadSections();
       toast.success('Sección eliminada');
+      setDeleteConfirmOpen(false);
+      setSectionToDelete(null);
     } catch (error: any) {
       console.error('Error deleting section:', error);
       toast.error(error.message || 'Error al eliminar la sección.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -162,7 +178,7 @@ export default function AdminSectionsPage() {
                     <Button variant="outline" size="sm" onClick={() => openEditModal(sec)}>
                       <Pencil size={14} style={{ marginRight: '0.25rem' }} /> Editar
                     </Button>
-                    <Button variant="outline" size="sm" style={{ color: 'var(--color-error)', borderColor: 'var(--color-error)' }} onClick={() => handleDelete(sec.id)}>
+                    <Button variant="outline" size="sm" style={{ color: 'var(--color-error)', borderColor: 'var(--color-error)' }} onClick={() => handleDeleteRequest(sec.id)}>
                       <Trash2 size={14} style={{ marginRight: '0.25rem' }} /> Eliminar
                     </Button>
                   </td>
@@ -226,6 +242,18 @@ export default function AdminSectionsPage() {
           </div>
         </form>
       </Modal>
+
+      <ConfirmDialog
+        isOpen={deleteConfirmOpen}
+        onClose={() => setDeleteConfirmOpen(false)}
+        onConfirm={confirmDelete}
+        title="Eliminar sección"
+        message="¿Estás seguro de que deseas eliminar esta sección permanentemente? Esta acción no se puede deshacer."
+        confirmText="Eliminar"
+        cancelText="Cancelar"
+        type="danger"
+        isConfirming={isDeleting}
+      />
     </div>
   );
 }

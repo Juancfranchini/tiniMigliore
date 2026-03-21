@@ -12,17 +12,17 @@
 .toastWrapper {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   padding: 1rem 1.25rem;
   border-radius: var(--radius-lg);
   background-color: var(--color-surface);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05); /* Softer, wider shadow */
+  border: 1px solid var(--color-border); /* Subtle overall border */
   pointer-events: auto; /* Re-enable clicks for the toast box */
-  min-width: 300px;
-  max-width: 400px;
+  min-width: 320px;
+  max-width: 420px;
   animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transition: all 0.2s ease-in-out;
-  border-left: 4px solid transparent;
 }
 
 .toastWrapper.closing {
@@ -51,25 +51,22 @@
   }
 }
 
-/* Variantes de Color */
-.success { border-left-color: #10B981; }
-.success .icon { color: #10B981; }
-
-.error { border-left-color: #EF4444; }
-.error .icon { color: #EF4444; }
-
-.warning { border-left-color: #F59E0B; }
-.warning .icon { color: #F59E0B; }
-
-.info { border-left-color: #3B82F6; }
-.info .icon { color: #3B82F6; }
+/* Variantes de Color para el círculo del icono */
+.success .iconContainer { background-color: #D1FAE5; color: #10B981; }
+.error .iconContainer { background-color: #FEE2E2; color: #EF4444; }
+.warning .iconContainer { background-color: #FEF3C7; color: #F59E0B; }
+.info .iconContainer { background-color: #DBEAFE; color: #3B82F6; }
 
 .iconContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
 }
+
 
 .message {
   flex-grow: 1;
