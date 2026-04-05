@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from '../../../components/ui/Button';
-import { orderService } from '../../../services/mock/order';
+import { orderService } from '../../../services/api/order';
 import type { Order, OrderStatus } from '../../../core/types/order';
 import { toast } from '../../../utils/toast';
 import { useSettingsStore } from '../store/settingsStore';

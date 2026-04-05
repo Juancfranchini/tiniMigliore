@@ -5,7 +5,7 @@ import * as z from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { useCartStore } from '../../cart/store/cartStore';
 import { useSettingsStore } from '../../admin/store/settingsStore';
-import { orderService } from '../../../services/mock/order';
+import { orderService } from '../../../services/api/order';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 import { Card, CardHeader, CardTitle, CardContent } from '../../../components/ui/Card';
