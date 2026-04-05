@@ -1,7 +1,7 @@
 import type { Order } from '../../core/types/order';
 
 // Utilizamos una variable de entorno hipotética para apuntar al backend seguro
-export const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:3000' : '');
+export const API_URL = import.meta.env.VITE_API_URL || '';
 const SENDER_EMAIL = import.meta.env.VITE_SENDER_EMAIL || 'hola@tinimigliore.com';
 const SENDER_NAME = 'Tini Migliore';
 

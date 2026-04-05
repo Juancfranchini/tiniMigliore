@@ -69,34 +69,32 @@ export const orderService = {
     }
   },
 
-  createOrder: async (buyerInfo: OrderBuyerInfo, items: OrderItem[], total: number, deliveryMethod: DeliveryMethod = 'delivery'): Promise<Order> => {
-    // Calculo inicial del fee (se puede ajustar luego con backend completo para envíos)
-    const shippingFee = 0; 
-    const shippingCostToRemis = 0;
+  createOrder: async (buyerInfo: OrderBuyerInfo, items: OrderItem[], _total: number, deliveryMethod: DeliveryMethod = 'delivery'): Promise<Order> => {
+
 
     const payload = {
-      buyer_name: buyerInfo.name,
-      buyer_phone: buyerInfo.phone,
-      buyer_email: buyerInfo.email,
-      delivery_method: deliveryMethod,
-      delivery_date: buyerInfo.deliveryDate,
-      delivery_time_range: buyerInfo.deliveryTimeRange,
-      shipping_fee: shippingFee,
-      shipping_cost_to_remis: shippingCostToRemis,
-      address_street: buyerInfo.street,
-      address_number: buyerInfo.number,
-      address_apartment: undefined, // Add logic if needed
-      address_neighborhood: buyerInfo.neighborhood,
-      address_city: undefined, // Add logic if needed
-      address_state: buyerInfo.state,
-      address_zip_code: buyerInfo.zipCode,
-      address_references: buyerInfo.references,
-      items: items.map(item => ({
-        product_id: item.productId,
-        product_name: item.productName,
-        unit_price: item.unitPrice,
+      buyer: {
+        name: buyerInfo.name,
+        phone: buyerInfo.phone,
+        email: buyerInfo.email,
+      },
+      products: items.map(item => ({
+        productId: item.productId,
+        productName: item.productName,
+        unitPrice: item.unitPrice,
         quantity: item.quantity
-      }))
+      })),
+      deliveryMethod: deliveryMethod,
+      deliveryDate: buyerInfo.deliveryDate,
+      deliveryTimeRange: buyerInfo.deliveryTimeRange,
+      address: {
+        street: buyerInfo.street,
+        number: buyerInfo.number,
+        neighborhood: buyerInfo.neighborhood,
+        state: buyerInfo.state,
+        zipCode: buyerInfo.zipCode,
+        references: buyerInfo.references,
+      }
     };
 
     try {
@@ -109,7 +107,9 @@ export const orderService = {
       });
 
       if (!response.ok) {
-        throw new Error('Error al crear el pedido');
+        const errorText = await response.text();
+        console.error('Error in POST /orders response:', response.status, errorText);
+        throw new Error(`Error al crear el pedido: ${errorText || response.statusText}`);
       }
 
       const result = await response.json();

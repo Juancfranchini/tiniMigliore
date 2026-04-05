@@ -7,7 +7,7 @@
 // Obtenemos la URL base del archivo .env (y caemos en un default si no existe)
 // En Vite las variables de entorno se exponen en import.meta.env
 // IMPORTANTE: En producción no usamos localhost como fallback.
-export const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:3000/api' : '');
+export const API_BASE_URL = import.meta.env.VITE_API_URL || '';
 
 /**
  * Función principal para hacer peticiones.
