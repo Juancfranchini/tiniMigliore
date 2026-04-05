@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../../components/ui/Card';
 import { Package, ShoppingCart, Users, DollarSign } from 'lucide-react';
-import { orderService } from '../../../services/mock/order';
+import { orderService } from '../../../services/api/order';
 import { catalogService } from '../../../services/api/catalog';
 import type { Order, OrderStatus } from '../../../core/types/order';
 import type { Product } from '../../../core/types/catalog';
