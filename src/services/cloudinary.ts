@@ -12,15 +12,15 @@ export interface CloudinaryConfig {
 
 export const cloudinaryService = {
   uploadImage: async (file: File, config: CloudinaryConfig): Promise<CloudinaryImageDetails> => {
-    if (!config.cloudName || !config.uploadPreset) {
-      throw new Error('Falta configuración de Cloudinary (cloudName o uploadPreset).');
+    if (!config.cloudName) {
+      throw new Error('Falta configuración de Cloudinary (cloudName).');
     }
 
     const url = `https://api.cloudinary.com/v1_1/${config.cloudName}/image/upload`;
     
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('upload_preset', config.uploadPreset);
+    formData.append('upload_preset', config.uploadPreset || 'tini_unsigned'); // ESTE ES CLAVE
     if (config.folder) {
       formData.append('folder', config.folder);
     }

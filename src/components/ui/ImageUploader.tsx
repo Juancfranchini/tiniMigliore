@@ -59,11 +59,11 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     if (!validateFile(file)) return;
 
     const cloudName = settings?.media?.cloudinaryCloudName;
-    const uploadPreset = settings?.media?.cloudinaryUploadPreset;
+    const uploadPreset = settings?.media?.cloudinaryUploadPreset || 'tini_unsigned';
     const folder = settings?.media?.cloudinaryFolder;
 
-    if (!cloudName || !uploadPreset) {
-      const msg = 'Configuración incompleta: definí Cloud Name y Upload Preset en Configuraciones.';
+    if (!cloudName) {
+      const msg = 'Configuración incompleta: definí Cloud Name en Configuraciones.';
       setErrorMsg(msg);
       onError?.(msg);
       return;
