@@ -19,6 +19,8 @@ export interface OrderBuyerInfo {
   phone: string;
   email?: string;
   preferredConfirmationChannel?: ConfirmationChannel;
+  deliveryDate?: string;
+  deliveryTimeRange?: string;
   street?: string; // Opt for pickup
   number?: string;
   neighborhood?: string;
@@ -34,6 +36,8 @@ export interface Order {
   total: number;
   status: OrderStatus;
   deliveryMethod?: DeliveryMethod; // Optional for backward compatibility
+  deliveryDate?: string;
+  deliveryTimeRange?: string;
   shippingFee?: number;
   shippingCostToRemis?: number;
   netRevenueExcludingShipping?: number;

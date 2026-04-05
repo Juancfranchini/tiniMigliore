@@ -1,10 +1,12 @@
-import { X, Trash2, Plus, Minus } from 'lucide-react';
+import { X, Trash2, Plus, Minus, Truck, Store } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCartStore } from '../store/cartStore';
+import { useSettingsStore } from '../../admin/store/settingsStore';
 import { Button } from '../../../components/ui/Button';
 
 export function CartSidebar() {
-  const { isOpen, closeCart, items, removeItem, updateQuantity, getSubtotal } = useCartStore();
+  const { isOpen, closeCart, items, removeItem, updateQuantity, getSubtotal, deliveryMethod, setDeliveryMethod } = useCartStore();
+  const settings = useSettingsStore(state => state.settings);
   const navigate = useNavigate();
 
   if (!isOpen) return null;
@@ -113,6 +115,40 @@ export function CartSidebar() {
 
         {items.length > 0 && (
           <div style={{ padding: '1.5rem', borderTop: '1px solid var(--color-border)', backgroundColor: 'var(--color-brand-crema)' }}>
+            
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem' }}>
+              {settings?.checkout?.deliveryEnabled !== false && (
+                <button
+                  type="button"
+                  onClick={() => setDeliveryMethod('delivery')}
+                  style={{
+                    flex: 1, padding: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
+                    borderRadius: 'var(--radius-md)', fontWeight: 600, transition: 'all 0.2s',
+                    backgroundColor: deliveryMethod === 'delivery' ? 'var(--color-brand-morado)' : 'var(--color-surface)',
+                    color: deliveryMethod === 'delivery' ? 'white' : 'var(--color-text-secondary)',
+                    border: `1px solid ${deliveryMethod === 'delivery' ? 'var(--color-brand-morado)' : 'var(--color-border)'}`
+                  }}
+                >
+                  <Truck size={18} /> Envío
+                </button>
+              )}
+              {settings?.checkout?.pickupEnabled !== false && (
+                <button
+                  type="button"
+                  onClick={() => setDeliveryMethod('pickup')}
+                  style={{
+                    flex: 1, padding: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
+                    borderRadius: 'var(--radius-md)', fontWeight: 600, transition: 'all 0.2s',
+                    backgroundColor: deliveryMethod === 'pickup' ? 'var(--color-brand-morado)' : 'var(--color-surface)',
+                    color: deliveryMethod === 'pickup' ? 'white' : 'var(--color-text-secondary)',
+                    border: `1px solid ${deliveryMethod === 'pickup' ? 'var(--color-brand-morado)' : 'var(--color-border)'}`
+                  }}
+                >
+                  <Store size={18} /> Retiro
+                </button>
+              )}
+            </div>
+
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem', fontSize: '1.25rem', fontWeight: 600, color: 'var(--color-brand-morado)' }}>
               <span>Subtotal</span>
               <span>{formatPrice(getSubtotal())}</span>

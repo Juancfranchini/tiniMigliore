@@ -19,6 +19,8 @@ const baseSchema = z.object({
   phone: z.string().min(8, 'Ingresa un número de teléfono válido (ej: 11 4000 5000)'), // Recuente buyer identifier
   email: z.string().email('Email requerido para enviar la confirmación'),
   deliveryMethod: z.enum(['pickup', 'delivery']),
+  deliveryDate: z.string().optional(),
+  deliveryTimeRange: z.string().optional(),
   street: z.string().optional(),
   number: z.string().optional(),
   neighborhood: z.string().optional(),
@@ -28,6 +30,13 @@ const baseSchema = z.object({
 });
 
 const checkoutSchema = baseSchema.superRefine((data, ctx) => {
+  if (!data.deliveryDate || data.deliveryDate.length < 10) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'La fecha es obligatoria', path: ['deliveryDate'] });
+  }
+  if (!data.deliveryTimeRange || data.deliveryTimeRange.length < 3) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'El rango horario es obligatorio', path: ['deliveryTimeRange'] });
+  }
+
   if (data.deliveryMethod === 'delivery') {
     if (!data.street || data.street.length < 3) {
       ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'La calle es obligatoria', path: ['street'] });
@@ -47,10 +56,12 @@ const checkoutSchema = baseSchema.superRefine((data, ctx) => {
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 
 export default function CheckoutPage() {
-  const { items, getSubtotal, clearCart } = useCartStore();
+  const { items, getSubtotal, clearCart, deliveryMethod } = useCartStore();
   const settings = useSettingsStore(state => state.settings);
   const navigate = useNavigate();
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  const getTodayFormatted = () => new Date().toISOString().split('T')[0];
 
   const {
     register,
@@ -60,7 +71,9 @@ export default function CheckoutPage() {
   } = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
-      deliveryMethod: 'delivery',
+      deliveryMethod: deliveryMethod || 'delivery',
+      deliveryDate: getTodayFormatted(),
+      deliveryTimeRange: '9:00 - 12:00',
       state: 'Buenos Aires'
     }
   });
@@ -174,6 +187,35 @@ export default function CheckoutPage() {
                       </span>
                     </label>
                   )}
+                </div>
+              </div>
+
+              <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1.5rem', marginBottom: '1.5rem' }}>
+                <h3 className={styles.sectionTitle}>Fecha y Hora Esperada</h3>
+                <div className={styles.grid2Cols}>
+                  <Input
+                    label="Fecha *"
+                    type="date"
+                    min={getTodayFormatted()}
+                    error={errors.deliveryDate?.message}
+                    {...register('deliveryDate')}
+                  />
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem' }}>
+                    <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--color-text-primary)' }}>Rango Horario *</label>
+                    <select
+                      {...register('deliveryTimeRange')}
+                      style={{
+                        padding: '0.625rem 1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)',
+                        backgroundColor: 'var(--color-surface)', fontSize: '1rem', color: 'var(--color-text-primary)', outline: 'none'
+                      }}
+                    >
+                      <option value="9:00 - 12:00">9:00 a 12:00 hs</option>
+                      <option value="12:00 - 15:00">12:00 a 15:00 hs</option>
+                      <option value="15:00 - 18:00">15:00 a 18:00 hs</option>
+                      <option value="18:00 - 20:00">18:00 a 20:00 hs</option>
+                    </select>
+                    {errors.deliveryTimeRange?.message && <span style={{ color: 'var(--color-error)', fontSize: '0.75rem' }}>{errors.deliveryTimeRange.message}</span>}
+                  </div>
                 </div>
               </div>
 

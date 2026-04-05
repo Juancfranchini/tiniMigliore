@@ -6,6 +6,16 @@ import type {
   ContactConfig 
 } from '../../core/types/catalog';
 
+const mapProduct = (p: any): Product => ({
+  ...p,
+  id: p.id?.toString() ?? '',
+  sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
+  imageUrl: p.imageUrl ?? p.image_url ?? '',
+  price: Number(p.price || 0),
+  description: p.description ?? '',
+  name: p.name ?? ''
+});
+
 /**
  * Servicio real que interactúa con el backend.
  * Conserva EXACTAMENTE la misma firma que src/services/mock/catalog.ts
@@ -17,13 +27,17 @@ export const catalogService = {
    * Obtiene todas las secciones activas ordenadas.
    */
   getSections: async (): Promise<Section[]> => {
-    const data = await api.get<any>('/sections');
-    if (!Array.isArray(data)) return [];
-    return data.map(s => ({
-      ...s,
-      isActive: s.isActive ?? s.is_active ?? true,
-      id: s.id?.toString() ?? ''
-    }));
+    try {
+      const data = await api.get<any>('/sections');
+      if (!Array.isArray(data)) return [];
+      return data.map(s => ({
+        ...s,
+        isActive: s.isActive ?? s.is_active ?? true,
+        id: s.id?.toString() ?? ''
+      }));
+    } catch {
+      return [];
+    }
   },
 
   createSection: async (data: Omit<Section, 'id'>): Promise<Section> => {
@@ -59,27 +73,21 @@ export const catalogService = {
   },
 
   getProducts: async (sectionId?: string): Promise<Product[]> => {
-    const url = sectionId ? `/products?sectionId=${sectionId}` : '/products';
-    const data = await api.get<any>(url);
-    if (!Array.isArray(data)) return [];
-    return data.map(p => ({
-      ...p,
-      imageUrl: p.imageUrl ?? p.image_url ?? '',
-      sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
-      id: p.id?.toString() ?? ''
-    }));
+    try {
+      const url = sectionId ? `/products?sectionId=${sectionId}` : '/products';
+      const data = await api.get<any>(url);
+      if (!Array.isArray(data)) return [];
+      return data.map(mapProduct);
+    } catch {
+      return [];
+    }
   },
 
   getProductById: async (id: string): Promise<Product | undefined> => {
     try {
       const p = await api.get<any>(`/products/${id}`);
       if (!p) return undefined;
-      return {
-        ...p,
-        imageUrl: p.imageUrl ?? p.image_url ?? '',
-        sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
-        id: p.id?.toString() ?? ''
-      };
+      return mapProduct(p);
     } catch (error) {
       return undefined;
     }
@@ -92,12 +100,7 @@ export const catalogService = {
       image_url: data.imageUrl
     };
     const p = await api.post<any>('/products', payload);
-    return {
-      ...p,
-      imageUrl: p.imageUrl ?? p.image_url ?? '',
-      sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
-      id: p.id?.toString() ?? ''
-    };
+    return mapProduct(p);
   },
 
   updateProduct: async (id: string, data: Partial<Product>): Promise<Product> => {
@@ -107,12 +110,7 @@ export const catalogService = {
       ...(data.imageUrl !== undefined && { image_url: data.imageUrl })
     };
     const p = await api.put<any>(`/products/${id}`, payload);
-    return {
-      ...p,
-      imageUrl: p.imageUrl ?? p.image_url ?? '',
-      sectionId: p.sectionId?.toString() ?? p.section_id?.toString() ?? '',
-      id: p.id?.toString() ?? ''
-    };
+    return mapProduct(p);
   },
 
   deleteProduct: async (id: string): Promise<void> => {
@@ -144,6 +142,8 @@ export const catalogService = {
             try { bannerData = JSON.parse(item.value); } catch {}
           } else if (item.key === 'landing' && typeof item.value === 'object') {
             bannerData = item.value.banner;
+          } else if (item.key === 'landing' && typeof item.value === 'string') {
+            try { bannerData = JSON.parse(item.value).banner; } catch {}
           }
         });
       } else if (settingsResult && typeof settingsResult === 'object') {
@@ -151,7 +151,12 @@ export const catalogService = {
       }
 
       if (bannerData) {
-        return { ...defaultBanner, ...bannerData };
+        return {
+          ...defaultBanner,
+          ...bannerData,
+          isActive: bannerData.isActive ?? bannerData.is_active ?? defaultBanner.isActive,
+          imageUrl: bannerData.imageUrl ?? bannerData.image_url ?? defaultBanner.imageUrl
+        };
       }
       return defaultBanner;
     } catch (error) {
@@ -183,6 +188,8 @@ export const catalogService = {
             try { contactData = JSON.parse(item.value); } catch {}
           } else if (item.key === 'landing' && typeof item.value === 'object') {
             contactData = item.value.contact;
+          } else if (item.key === 'landing' && typeof item.value === 'string') {
+            try { contactData = JSON.parse(item.value).contact; } catch {}
           }
         });
       } else if (settingsResult && typeof settingsResult === 'object') {
@@ -190,7 +197,12 @@ export const catalogService = {
       }
 
       if (contactData) {
-        return { ...defaultContact, ...contactData };
+        return {
+          ...defaultContact,
+          ...contactData,
+          isActive: contactData.isActive ?? contactData.is_active ?? defaultContact.isActive,
+          imageUrl: contactData.imageUrl ?? contactData.image_url ?? defaultContact.imageUrl
+        };
       }
       return defaultContact;
     } catch (error) {

@@ -7,6 +7,8 @@ import type { OrderItem } from '../../../core/types/order';
 interface CartState {
   items: OrderItem[];
   isOpen: boolean;
+  deliveryMethod: 'delivery' | 'pickup';
+  setDeliveryMethod: (method: 'delivery' | 'pickup') => void;
   openCart: () => void;
   closeCart: () => void;
   addItem: (product: Product, options?: ProductOption[]) => void;
@@ -19,6 +21,8 @@ interface CartState {
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],
   isOpen: false,
+  deliveryMethod: 'delivery',
+  setDeliveryMethod: (method) => set({ deliveryMethod: method }),
   openCart: () => set({ isOpen: true }),
   closeCart: () => set({ isOpen: false }),
   addItem: (product, options = []) => {
@@ -37,8 +41,13 @@ export const useCartStore = create<CartState>((set, get) => ({
 
       if (existingItemIndex > -1) {
         const newItems = [...state.items];
-        newItems[existingItemIndex].quantity += 1;
-        newItems[existingItemIndex].totalLinePrice = newItems[existingItemIndex].quantity * unitPrice;
+        const existing = newItems[existingItemIndex];
+        const quantity = existing.quantity + 1;
+        newItems[existingItemIndex] = {
+           ...existing,
+           quantity,
+           totalLinePrice: quantity * Number(unitPrice)
+        };
         return { items: newItems, isOpen: true };
       }
 
@@ -46,10 +55,10 @@ export const useCartStore = create<CartState>((set, get) => ({
         productId: product.id,
         productName: product.name,
          imageUrl: product.imageUrl, // A useful shortcut for the UI
-        unitPrice,
+        unitPrice: Number(unitPrice),
         quantity: 1,
         selectedOptions: options,
-        totalLinePrice: unitPrice,
+        totalLinePrice: Number(unitPrice),
       };
 
       return { items: [...state.items, newItem], isOpen: true };
@@ -68,7 +77,7 @@ export const useCartStore = create<CartState>((set, get) => ({
       return {
         items: state.items.map((item) => {
           if (item.productId === productId) {
-             return { ...item, quantity, totalLinePrice: item.unitPrice * quantity };
+             return { ...item, quantity, totalLinePrice: Number(item.unitPrice) * quantity };
           }
           return item;
         }),

@@ -130,7 +130,7 @@ export default function AdminOrdersPage() {
                               fontSize: '0.65rem', fontWeight: 600, backgroundColor: '#FEF08A', color: '#854D0E', 
                               padding: '0.1rem 0.4rem', borderRadius: 'var(--radius-sm)', marginBottom: '0.25rem'
                             }}>
-                              🚚 Envío a Domicilio
+                              🚚 Envío a Domicilio {order.deliveryDate ? `| ${order.deliveryDate} (${order.deliveryTimeRange})` : ''}
                             </div>
                             <div style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>
                               {order.buyerInfo.street} {order.buyerInfo.number}, {order.buyerInfo.state}
@@ -172,7 +172,7 @@ export default function AdminOrdersPage() {
                             fontSize: '0.65rem', fontWeight: 600, backgroundColor: '#E9D5FF', color: '#6B21A8', 
                             padding: '0.1rem 0.4rem', borderRadius: 'var(--radius-sm)', marginTop: '0.25rem'
                           }}>
-                            🏪 Retiro en Local
+                            🏪 Retiro en Local {order.deliveryDate ? `| ${order.deliveryDate} (${order.deliveryTimeRange})` : ''}
                           </div>
                         )}
                       </div>
