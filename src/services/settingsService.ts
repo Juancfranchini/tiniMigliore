@@ -9,7 +9,7 @@ const defaultSettings: AppSettings = {
   contact: {
     instagramUrl: 'https://instagram.com/tinimigliore',
     tiktokUrl: '',
-    whatsappUrl: '',
+    whatsappUrl: 'https://wa.me/c/5491127238219',
     email: 'contacto@tinimigliore.com',
   },
   media: {

@@ -1,4 +1,5 @@
-import { Instagram, Smartphone, PlaySquare } from 'lucide-react';
+import { FiInstagram } from 'react-icons/fi';
+import { FaWhatsapp, FaTiktok } from 'react-icons/fa';
 import type { ContactConfig } from '../../../core/types/catalog';
 import logocontacto from '../../../assets/contacto.png';
 import styles from './ContactSection.module.css';
@@ -33,7 +34,7 @@ export function ContactSection({ contact }: ContactSectionProps) {
                 rel="noopener noreferrer"
                 className={styles.socialItem}
               >
-                <Instagram size={24} />
+                <FiInstagram size={24} />
               </a>
             )}
             {contactSettings?.whatsappUrl && (
@@ -43,7 +44,7 @@ export function ContactSection({ contact }: ContactSectionProps) {
                 rel="noopener noreferrer"
                 className={styles.socialItem}
               >
-                <Smartphone size={24} />
+                <FaWhatsapp size={24} />
               </a>
             )}
             {contactSettings?.tiktokUrl && (
@@ -53,18 +54,8 @@ export function ContactSection({ contact }: ContactSectionProps) {
                 rel="noopener noreferrer"
                 className={styles.socialItem}
               >
-                <PlaySquare size={24} />
+                <FaTiktok size={24} />
               </a>
-            )}
-            {!contactSettings?.instagramUrl && !contactSettings?.whatsappUrl && !contactSettings?.tiktokUrl && (
-              <>
-                 <a href="https://www.instagram.com/tini.migliore/" target="_blank" rel="noopener noreferrer" className={styles.socialItem}>
-                   <Instagram size={24} />
-                 </a>
-                 <a href="https://wa.me/c/5491127238219" target="_blank" rel="noopener noreferrer" className={styles.socialItem}>
-                   <Smartphone size={24} />
-                 </a>
-              </>
             )}
           </div>
         </div>
