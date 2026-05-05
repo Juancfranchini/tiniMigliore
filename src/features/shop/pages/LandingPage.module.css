@@ -21,7 +21,7 @@
   display: grid;
   grid-template-columns: 52% 48%;
   overflow: hidden;
-  padding-top: 70px; /* altura del header fijo */
+  padding-top: 74px;
   background: #e8e2da;
 }
 
@@ -678,7 +678,7 @@
     grid-template-columns: 1fr;
     height: auto;
     min-height: 100dvh;
-    padding-top: 62px;
+    padding-top: 74px;
   }
   .heroLeft { padding: 3.5rem 1.75rem 2.5rem 2.5rem; align-items: flex-start; }
   .heroRight {

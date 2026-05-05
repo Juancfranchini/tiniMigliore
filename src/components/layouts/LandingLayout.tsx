@@ -1,12 +1,20 @@
+import { useEffect, useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import logoheader from '../../assets/logoheader.png';
 import styles from './LandingLayout.module.css';
 
 export default function LandingLayout() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      {/* Header minimal */}
-      <header className={styles.header}>
+      <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
         <div className={styles.headerInner}>
           <Link to="/">
             <img src={logoheader} alt="Tini Migliore" className={styles.logo} />
@@ -18,7 +26,6 @@ export default function LandingLayout() {
           </nav>
         </div>
       </header>
-
       <main style={{ flex: 1 }}>
         <Outlet />
       </main>
