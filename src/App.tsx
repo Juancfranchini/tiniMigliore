@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import ShopLayout from './components/layouts/ShopLayout';
+import LandingLayout from './components/layouts/LandingLayout';
 import AdminLayout from './components/layouts/AdminLayout';
 import DashboardPage from './features/admin/pages/DashboardPage';
 import AdminOrdersPage from './features/admin/pages/AdminOrdersPage';
@@ -17,6 +18,7 @@ import { apiClient } from './services/api/client';
 import { useSettingsStore } from './features/admin/store/settingsStore';
 
 // Public Pages
+import LandingPage from './features/shop/pages/LandingPage';
 import HomePage from './features/shop/pages/HomePage';
 import CheckoutPage from './features/shop/pages/CheckoutPage';
 
@@ -25,40 +27,40 @@ function App() {
   const loadSettings = useSettingsStore((state) => state.loadSettings);
 
   useEffect(() => {
-    // Cargar settings iniciales de la app
     loadSettings().catch(() => {
-       console.error('No se pudieron cargar configuraciones iniciales.');
+      console.error('No se pudieron cargar configuraciones iniciales.');
     });
-    // Verificación simple para validar que el puente React -> Express está vivo
     apiClient.healthCheck()
       .then((isOk) => {
         if (isOk) {
-          addToast({
-            type: 'success',
-            message: '🚀 Backend conectado correctamente',
-            duration: 4000
-          });
+          addToast({ type: 'success', message: '🚀 Backend conectado correctamente', duration: 4000 });
         }
       })
       .catch(() => {
-        addToast({
-          type: 'error',
-          message: '⚠️ Error: No se pudo conectar al Backend',
-          duration: 6000
-        });
+        addToast({ type: 'error', message: '⚠️ Error: No se pudo conectar al Backend', duration: 6000 });
       });
   }, [addToast]);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<ShopLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="checkout" element={<CheckoutPage />} />
+        {/* Landing principal con identidad */}
+        <Route path="/" element={<LandingLayout />}>
+          <Route index element={<LandingPage />} />
         </Route>
 
-        <Route path="/admin/login" element={<LoginPage />} />
+        {/* Catálogo de productos */}
+        <Route path="/catalogo" element={<ShopLayout />}>
+          <Route index element={<HomePage />} />
+        </Route>
 
+        {/* Checkout */}
+        <Route path="/checkout" element={<ShopLayout />}>
+          <Route index element={<CheckoutPage />} />
+        </Route>
+
+        {/* Admin */}
+        <Route path="/admin/login" element={<LoginPage />} />
         <Route path="/admin" element={<ProtectedRoute />}>
           <Route element={<AdminLayout />}>
             <Route index element={<DashboardPage />} />

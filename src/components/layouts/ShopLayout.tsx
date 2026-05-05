@@ -31,9 +31,9 @@ export default function ShopLayout() {
 
           <nav className={styles.navSection}>
             <div className={styles.desktopLinks}>
-              <Link to="/" className={styles.navLink}>Home</Link>
-              <a href="/#catalogo" className={styles.navLink}>Menú</a>
-              <a href="/#contacto" className={styles.navLink}>Contacto</a>
+              <Link to="/" className={styles.navLink}>← Inicio</Link>
+              <a href="/catalogo" className={styles.navLink}>Menú</a>
+              <a href="/catalogo#contacto" className={styles.navLink}>Contacto</a>
             </div>
             
             <button
@@ -61,8 +61,8 @@ export default function ShopLayout() {
 
         {/* Mobile Navigation Dropdown */}
         <div className={`${styles.mobileNavLayer} ${isMobileMenuOpen ? styles.open : ''}`}>
-           <Link to="/" className={styles.navLink} onClick={closeMenu}>Home</Link>
-           <a href="/#catalogo" className={styles.navLink} onClick={closeMenu}>Menú</a>
+           <Link to="/" className={styles.navLink} onClick={closeMenu}>← Inicio</Link>
+           <a href="/catalogo" className={styles.navLink} onClick={closeMenu}>Menú</a>
            <a href="/#contacto" className={styles.navLink} onClick={closeMenu}>Contacto</a>
         </div>
       </header>
