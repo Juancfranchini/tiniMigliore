@@ -10,6 +10,7 @@ import AdminProductsPage from './features/admin/pages/AdminProductsPage';
 import AdminSectionsPage from './features/admin/pages/AdminSectionsPage';
 import AdminLandingPage from './features/admin/pages/AdminLandingPage';
 import AdminSettingsPage from './features/admin/pages/AdminSettingsPage';
+import AdminExpensesPage from './features/admin/pages/AdminExpensesPage';
 import LoginPage from './features/admin/pages/LoginPage';
 import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { ToastContainer } from './components/ui/Toast/ToastContainer';
@@ -69,6 +70,7 @@ function App() {
             <Route path="landing" element={<AdminLandingPage />} />
             <Route path="sections" element={<AdminSectionsPage />} />
             <Route path="settings" element={<AdminSettingsPage />} />
+            <Route path="expenses" element={<AdminExpensesPage />} />
           </Route>
         </Route>
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Package, Tag, ShoppingCart, LogOut, LayoutTemplate, Settings, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Package, Tag, ShoppingCart, LogOut, LayoutTemplate, Settings, Menu, X, Receipt } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import { useAuthStore } from '../../features/admin/store/authStore';
 import logo from '../../assets/logoheader.png';
@@ -18,6 +18,7 @@ export default function AdminLayout() {
     { to: '/admin/products', icon: <Package size={20} />, label: 'Productos' },
     { to: '/admin/sections', icon: <Tag size={20} />, label: 'Secciones' },
     { to: '/admin/landing', icon: <LayoutTemplate size={20} />, label: 'Landing' },
+    { to: '/admin/expenses', icon: <Receipt size={20} />, label: 'Gastos' },
     { to: '/admin/settings', icon: <Settings size={20} />, label: 'Configuraciones' },
   ];
 

@@ -34,6 +34,7 @@ export interface AppSettings {
   landing: {
     theme: 'dark' | 'light';
     heroTagline: string;
+    heroSubtitle?: string;
     aboutTitle: string;
     aboutText1: string;
     aboutText2: string;
@@ -51,4 +52,3 @@ export interface AppSettings {
     specialty4Desc: string;
   };
 }
-
