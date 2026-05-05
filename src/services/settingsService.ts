@@ -33,7 +33,26 @@ const defaultSettings: AppSettings = {
     sellerAddress: '',
     sellerAddressLabel: 'Punto de Retiro',
     mapsEnabled: false,
-  }
+  },
+  landing: {
+    theme: 'dark',
+    heroTagline: 'Pastelería artesanal con alma',
+    aboutTitle: 'Hecha con amor,\npensada en vos',
+    aboutText1: 'Soy Tini, chef pastelera profesional. Cada torta, cada caja, cada alfajor que sale de mi cocina lleva tiempo, técnica y mucho cariño. No hago pastelería en serie — hago piezas únicas para momentos únicos.',
+    aboutText2: 'Trabajo con ingredientes de primera calidad y elaboración artesanal. Desde una merienda especial hasta el postre de tu evento más importante, me encargo de que cada bocado sea una experiencia.',
+    deliveryZone: 'CABA y GBA. Coordinamos día y horario por WhatsApp.',
+    pickupZone: 'Sin costo adicional. Zona Palermo / Villa del Parque.',
+    ctaTitle: '¿Te dio hambre?',
+    ctaSubtitle: 'Explorá el catálogo completo y armá tu pedido.',
+    specialty1Title: 'Tortas de diseño',
+    specialty1Desc: 'Para cumpleaños, casamientos y celebraciones. Personalizadas a tu gusto.',
+    specialty2Title: 'Bombones & tabletas',
+    specialty2Desc: 'Chocolate de primera selección, rellenos artesanales únicos.',
+    specialty3Title: 'Cajas de degustación',
+    specialty3Desc: 'Alfajores, sablés y petit fours. Perfectas para regalar o compartir.',
+    specialty4Title: 'Tartas & tarteletas',
+    specialty4Desc: 'Masa casera, rellenos de temporada. Lemon curd, frangipane, dulce de leche.',
+  },
 };
 
 // Función auxiliar para desempaquetar arreglos key-value del backend
@@ -103,6 +122,7 @@ function normalizeSettings(data: any): AppSettings {
       checkout: { ...defaultSettings.checkout, ...(data.checkout || {}) },
       notifications: { ...defaultSettings.notifications, ...(data.notifications || {}) },
       maps: { ...defaultSettings.maps, ...(data.maps || {}) },
+      landing: { ...defaultSettings.landing, ...(data.landing || {}) },
     };
   }
 

@@ -31,4 +31,24 @@ export interface AppSettings {
     sellerAddressLabel?: string;
     mapsEnabled: boolean;
   };
+  landing: {
+    theme: 'dark' | 'light';
+    heroTagline: string;
+    aboutTitle: string;
+    aboutText1: string;
+    aboutText2: string;
+    deliveryZone: string;
+    pickupZone: string;
+    ctaTitle: string;
+    ctaSubtitle: string;
+    specialty1Title: string;
+    specialty1Desc: string;
+    specialty2Title: string;
+    specialty2Desc: string;
+    specialty3Title: string;
+    specialty3Desc: string;
+    specialty4Title: string;
+    specialty4Desc: string;
+  };
 }
+

@@ -445,3 +445,60 @@
     max-width: 280px;
   }
 }
+
+/* ── DARK / LIGHT THEMES ── */
+
+/* DARK MODE (default) */
+.dark .hero {
+  background: linear-gradient(160deg, var(--color-brand-morado) 0%, #3a2040 60%, #1e1028 100%);
+}
+.dark .heroLogo {
+  filter: brightness(0) invert(1);
+  opacity: 0.95;
+}
+.dark .heroTagline {
+  color: rgba(255,255,255,0.75);
+}
+.dark .ctaSecondary {
+  color: rgba(255,255,255,0.8);
+  border-color: rgba(255,255,255,0.3);
+}
+.dark .ctaSecondary:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.6);
+}
+.dark .scrollHint { color: rgba(255,255,255,0.5); }
+.dark .about { background: #f9f4f7; }
+.dark .specialties { background: var(--color-brand-crema); }
+.dark .ctaSection { background: #fff; }
+.dark .contact { background: var(--color-brand-crema); }
+
+/* LIGHT MODE */
+.light .hero {
+  background: linear-gradient(160deg, #fdf0f5 0%, #f5e6ef 60%, #ede0e8 100%);
+}
+.light .heroLogo {
+  filter: none;
+  opacity: 1;
+}
+.light .heroTagline {
+  color: var(--color-brand-morado);
+  opacity: 0.8;
+}
+.light .ctaPrimary {
+  box-shadow: 0 4px 20px rgba(127, 76, 165, 0.25);
+}
+.light .ctaSecondary {
+  color: var(--color-brand-morado);
+  border-color: rgba(111, 91, 114, 0.4);
+  background: rgba(255,255,255,0.6);
+}
+.light .ctaSecondary:hover {
+  background: rgba(255,255,255,0.9);
+  border-color: var(--color-brand-morado);
+}
+.light .scrollHint { color: var(--color-brand-morado); opacity: 0.5; }
+.light .about { background: #fff; }
+.light .specialties { background: #fdf0f5; }
+.light .ctaSection { background: #f9f4f7; }
+.light .contact { background: #fff; }
