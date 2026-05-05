@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { HeroBanner } from '../components/HeroBanner';
 import { ProductCard } from '../components/ProductCard';
 import { ContactSection } from '../components/ContactSection';
+import { CatalogSkeleton, HeroSkeleton } from '../../../components/ui/SkeletonLoader';
 import { catalogService } from '../../../services/api/catalog';
 import type { Section, Product, BannerConfig, ContactConfig } from '../../../core/types/catalog';
 import { useCartStore } from '../../cart/store/cartStore';
@@ -45,10 +46,9 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div style={{ height: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <p style={{ fontFamily: 'var(--font-serif)', color: 'var(--color-brand-lila)', fontSize: '1.25rem' }}>
-          Cargando delicias...
-        </p>
+      <div>
+        <HeroSkeleton />
+        <CatalogSkeleton count={6} />
       </div>
     );
   }

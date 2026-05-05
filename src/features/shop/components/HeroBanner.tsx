@@ -25,6 +25,9 @@ export function HeroBanner({
         src={imageUrl}
         alt={title}
         className={styles.bgImage}
+        loading="eager"
+        fetchPriority="high"
+        decoding="async"
       />
       
       {/* Overlay */}

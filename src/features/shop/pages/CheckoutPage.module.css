@@ -68,8 +68,8 @@
     margin: 1.5rem auto;
   }
   .pageTitle {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
   }
   .mainGrid {
     grid-template-columns: 1fr;
@@ -78,12 +78,14 @@
     grid-template-columns: 1fr;
   }
   .gridAddress {
-    grid-template-columns: 2fr 1fr; /* Todavía mantener calle y número en una fila, pero más balanceado. O si no, 1fr total: */
+    grid-template-columns: 2fr 1fr;
   }
-  /* Si prefieres apilar todo en mobile: */
-  /* .gridAddress { grid-template-columns: 1fr; } */
-  
   .summaryCard {
     position: static;
+    /* El resumen aparece primero en mobile */
+    order: -1;
+  }
+  .deliveryCard {
+    padding: 0.875rem;
   }
 }

@@ -27,25 +27,24 @@ export function ProductCard({ product, onAdd, onClick }: ProductCardProps) {
           if (onClick) onClick(product);
         }}
       >
-        <div style={{ position: 'relative', width: '100%', paddingTop: '80%', backgroundColor: '#f0f0f0' }}>
+        <div style={{ position: 'relative', width: '100%', aspectRatio: '4/5', backgroundColor: '#f0f0f0', overflow: 'hidden' }}>
           {product.imageUrl ? (
             <img
               src={product.imageUrl}
               alt={product.name}
+              loading="lazy"
+              decoding="async"
               style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
+                display: 'block',
                 filter: isAvailable ? 'none' : 'grayscale(100%)'
               }}
             />
           ) : (
             <div style={{
-              position: 'absolute',
-              top: 0, left: 0, width: '100%', height: '100%',
+              width: '100%', height: '100%',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               backgroundColor: '#f8f9fa', color: '#9ca3af',
               filter: isAvailable ? 'none' : 'grayscale(100%)'
