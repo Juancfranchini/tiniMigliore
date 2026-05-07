@@ -48,7 +48,7 @@ export const useCartStore = create<CartState>((set, get) => ({
            quantity,
            totalLinePrice: quantity * Number(unitPrice)
         };
-        return { items: newItems, isOpen: true };
+        return { items: newItems };
       }
 
       const newItem: OrderItem = {
@@ -61,7 +61,7 @@ export const useCartStore = create<CartState>((set, get) => ({
         totalLinePrice: Number(unitPrice),
       };
 
-      return { items: [...state.items, newItem], isOpen: true };
+      return { items: [...state.items, newItem] };
     });
   },
   removeItem: (productId) => {

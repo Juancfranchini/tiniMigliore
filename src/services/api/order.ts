@@ -70,7 +70,9 @@ export const orderService = {
   },
 
   createOrder: async (buyerInfo: OrderBuyerInfo, items: OrderItem[], _total: number, deliveryMethod: DeliveryMethod = 'delivery'): Promise<Order> => {
-
+    // Calculo inicial del fee (se puede ajustar luego con backend completo para envíos)
+    const shippingFee = 0; 
+    const shippingCostToRemis = 0;
 
     const payload = {
       buyer: {

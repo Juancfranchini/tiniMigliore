@@ -23,9 +23,15 @@ export function CartSidebar() {
     <>
       {/* Overlay */}
       <div 
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 transition-opacity"
         onClick={closeCart}
-        style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 50 }}
+        style={{ 
+          position: 'fixed', 
+          inset: 0, 
+          backgroundColor: 'rgba(0,0,0,0.45)', 
+          backdropFilter: 'blur(2px)',
+          WebkitBackdropFilter: 'blur(2px)',
+          zIndex: 50 
+        }}
       />
 
       {/* Sidebar panel */}

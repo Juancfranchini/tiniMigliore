@@ -2,7 +2,7 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: clamp(600px, 85vh, 900px);
+  height: clamp(600px, 85dvh, 900px);
   background-color: #e9e2e6;
   z-index: 0;
 }
@@ -90,7 +90,7 @@
 
 @media (max-width: 768px) {
   .heroSection {
-    height: 550px; /* Reducir altura en móviles */
+    height: clamp(480px, 88dvh, 700px);
   }
   .contentContainer {
     padding: 1.5rem;
